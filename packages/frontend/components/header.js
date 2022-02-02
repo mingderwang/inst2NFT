@@ -23,14 +23,14 @@ export default function Header() {
           {!session && (
             <>
               <span className={styles.notSignedInText}>
-                You are not signed in
+                You are not signed in Intagram
               </span>
               <a
                 href={`/api/auth/signin`}
                 className={styles.buttonPrimary}
                 onClick={(e) => {
                   e.preventDefault();
-                  signIn();
+                  signIn("facebook");
                 }}
               >
                 Sign in
