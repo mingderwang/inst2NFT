@@ -25,17 +25,17 @@ export const connectMetamask = async (
 };
 
 export const callContract = async (TokenURI, mintFailCallback) => {
-  const pins2FNTAddress = "0xE628c67C735d927BaaC9c2ddd8AcED2c5246a386";
+  const inst2NFTAddress = "0x830Db77829307170f6237e4b356091E488311a72";
 
   const pins2NFTAbi =
-    require("./Pins2NFT.json").abi;
+    require("./Inst2NFT.json").abi;
 
   const pins2NFT_ro = new ethers.Contract(
-    pins2FNTAddress,
+    inst2NFTAddress,
     pins2NFTAbi,
     provider
   );
-  const pins2NFT_rw = new ethers.Contract(pins2FNTAddress, pins2NFTAbi, signer);
+  const pins2NFT_rw = new ethers.Contract(inst2NFTAddress, pins2NFTAbi, signer);
   const balance = await pins2NFT_ro.name();
   try {
     const tx = await pins2NFT_rw.freeMint(signer.getAddress(), TokenURI);
