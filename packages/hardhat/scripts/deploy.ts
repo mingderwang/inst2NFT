@@ -14,15 +14,15 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
-  const Pins2NFT = await ethers.getContractFactory("Pins2NFT");
-  console.log("Deploying Pins2NFT...");
-  const pins2nft = await upgrades.deployProxy(Pins2NFT,[] , {
+  const Inst2NFT = await ethers.getContractFactory("Inst2NFT");
+  console.log("Deploying Inst2NFT...");
+  const inst2nft = await upgrades.deployProxy(Inst2NFT,[] , {
     initializer: "initialize",
   });
 
-  await pins2nft.deployed();
+  await inst2nft.deployed();
 
-  console.log("Pins2NFT deployed to:", pins2nft.address);
+  console.log("Inst2NFT deployed to:", inst2nft.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

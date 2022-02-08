@@ -1,7 +1,7 @@
-# Pin2NFT.sol
+# Inst2NFT.sol
 > On Rinkeby testnet
 ```
-0xE628c67C735d927BaaC9c2ddd8AcED2c5246a386
+0x830Db77829307170f6237e4b356091E488311a72
 ```
 
 
