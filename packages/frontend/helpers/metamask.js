@@ -1,6 +1,4 @@
 import { ethers } from "ethers";
-const { CONTRACT_ADDRESS } = require("../.secret.json");
-
 export var provider;
 export var signer;
 export const connectMetamask = async (
@@ -26,29 +24,11 @@ export const connectMetamask = async (
   }
 };
 
-export const getImageURLById = async (tokenID, callback) => {
-  const pins2FNTAddress = CONTRACT_ADDRESS;
-
-  const pins2NFTAbi =
-    require("../../hardhat/artifacts/contracts/Pins2NFT.sol/Pins2NFT.json").abi;
-
-  const pins2NFT_ro = new ethers.Contract(
-    pins2FNTAddress,
-    pins2NFTAbi,
-    provider
-  );
-  const tokenURI = await pins2NFT_ro.tokenURI(tokenID);
-  const a = await fetch(tokenURI);
-  const b = await a.json();
-  console.log(b.image);
-  return b.image;
-};
-
 export const callContract = async (TokenURI, mintFailCallback) => {
-  const pins2FNTAddress = CONTRACT_ADDRESS;
+  const pins2FNTAddress = "0xE628c67C735d927BaaC9c2ddd8AcED2c5246a386";
 
   const pins2NFTAbi =
-    require("../../hardhat/artifacts/contracts/Pins2NFT.sol/Pins2NFT.json").abi;
+    require("./Pins2NFT.json").abi;
 
   const pins2NFT_ro = new ethers.Contract(
     pins2FNTAddress,

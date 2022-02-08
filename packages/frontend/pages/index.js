@@ -1,3 +1,4 @@
+import useSWR from "swr";
 import { useSession } from "next-auth/react";
 import Pins from "../components/pins";
 

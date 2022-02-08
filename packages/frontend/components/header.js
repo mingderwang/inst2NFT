@@ -23,14 +23,14 @@ export default function Header() {
           {!session && (
             <>
               <span className={styles.notSignedInText}>
-                You are not signed in Intagram
+                You are not signed in
               </span>
               <a
                 href={`/api/auth/signin`}
                 className={styles.buttonPrimary}
                 onClick={(e) => {
                   e.preventDefault();
-                  signIn("facebook");
+                  signIn();
                 }}
               >
                 Sign in
@@ -67,7 +67,7 @@ export default function Header() {
 
       <div class="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box">
         <div class="flex-none px-2 mx-2">
-          <span class="text-lg font-bold">Pins2NFT</span>
+          <span class="text-lg font-bold">Inst2NFT</span>
         </div>
         <div class="flex-1 px-2 mx-2">
           <div class="items-stretch hidden lg:flex">
