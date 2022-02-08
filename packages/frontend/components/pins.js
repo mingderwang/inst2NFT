@@ -4,7 +4,7 @@ import { nft_storage } from "../helpers";
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function Pins({ ...props }) {
-  console.log("props", props);
+  console.log("props------>   ", props);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const { data, error } = useSWR(
