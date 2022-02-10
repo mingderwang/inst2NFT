@@ -43,19 +43,9 @@ export default NextAuth({
           if (!profile.email) {
             profile.email = profile.username;
           }
-          const url = `https://graph.facebook.com/facebook/picture?redirect=false`;
-          request
-            .get(url)
-            .then((res) => {
-              console.log("text", res.text);
-              console.log("body", res.body);
-              console.log("status", res.status);
-              // res.body, res.headers, res.status
-            })
-            .catch((err) => {
-              // err.message, err.response
-              console.error("yyy err", err.message);
-            });
+          const url = `https://graph.facebook.com/instagram/picture?redirect=false`;
+          const res = await request.get(url);
+          profile.image = JSON.parse(res.text).data.url;
           profile.media.data.map(console.log);
           return profile;
         },
@@ -70,7 +60,7 @@ export default NextAuth({
           id: profile.id,
           name: profile.username,
           email: profile.email,
-          image: 2,
+          image: profile.image,
           account_type: profile.account_type,
           media_count: profile.media_count,
           media: profile.media.data,
