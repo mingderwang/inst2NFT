@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+const request = require("superagent");
 
 export default NextAuth({
   providers: [
@@ -35,13 +36,26 @@ export default NextAuth({
         url: "https://graph.instagram.com/me?fields=id, username, account_type, media_count, media",
         async request({ client, tokens }) {
           // Get base profile
-          console.log("client", client);
-          console.log("tokens", tokens);
+          console.log("userinfo.client", client);
+          console.log("userinfo.tokens", tokens);
           const profile = await client.userinfo(tokens);
           // no email info from Pinterest API
           if (!profile.email) {
             profile.email = profile.username;
           }
+          const url = `https://graph.facebook.com/facebook/picture?redirect=false`;
+          request
+            .get(url)
+            .then((res) => {
+              console.log("text", res.text);
+              console.log("body", res.body);
+              console.log("status", res.status);
+              // res.body, res.headers, res.status
+            })
+            .catch((err) => {
+              // err.message, err.response
+              console.error("yyy err", err.message);
+            });
           profile.media.data.map(console.log);
           return profile;
         },
@@ -50,13 +64,16 @@ export default NextAuth({
       clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
 
       profile(profile, accessToken) {
-        console.log("token", accessToken);
-        console.log("profile", profile);
+        console.log("profile.token", accessToken);
+        console.log("profile.profile", profile);
         return {
           id: profile.id,
-          name: profile.account_type,
+          name: profile.username,
           email: profile.email,
-          image: profile.media_count,
+          image: 2,
+          account_type: profile.account_type,
+          media_count: profile.media_count,
+          media: profile.media.data,
         };
       },
       checks: "none",
@@ -66,54 +83,8 @@ export default NextAuth({
         redirect_uri: encodeURIComponent(process.env.INSTAGRAM_REDIRECT_URI),
       },
     },
-    {
-      id: "pinterest",
-      name: "Pinterest",
-      type: "oauth",
-      version: "2.0",
-      token: "https://api.pinterest.com/v5/oauth/token",
-      authorization: {
-        url: "https://www.pinterest.com/oauth",
-        params: {
-          audience: "api.pinterest.com",
-          prompt: "consent",
-          scope:
-            "ads:read,boards:read,boards:read_secret,boards:write,boards:write_secret,pins:read,pins:read_secret,pins:write,pins:write_secret,user_accounts:read",
-        },
-      },
-      userinfo: {
-        url: "https://api.pinterest.com/v5/user_account",
-        async request({ client, tokens }) {
-          // Get base profile
-          const profile = await client.userinfo(tokens);
-          // no email info from Pinterest API
-          if (!profile.email) {
-            profile.email = profile.username;
-          }
-          return profile;
-        },
-      },
-      clientId: process.env.PINTEREST_CLIENT_ID,
-      clientSecret: process.env.PINTEREST_CLIENT_SECRET,
-
-      profile(profile, accessToken) {
-        console.log("accessToken", accessToken);
-        console.log("profile", profile);
-        return {
-          id: profile.username,
-          name: profile.username,
-          email: profile.email,
-          image: profile.profile_image,
-        };
-      },
-      checks: "state",
-      headers: {},
-      authorizationParams: {
-        client_id: process.env.PINTEREST_CLIENT_ID,
-        redirect_uri: encodeURIComponent(process.env.PINTEREST_REDIRECT_URI),
-      },
-    },
   ],
+
   secret: process.env.SECRET,
 
   session: {
