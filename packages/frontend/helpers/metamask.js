@@ -25,7 +25,7 @@ export const connectMetamask = async (
 };
 
 export const callContract = async (TokenURI, mintFailCallback) => {
-  const inst2NFTAddress = "0x830Db77829307170f6237e4b356091E488311a72";
+  const inst2NFTAddress = "0xa1dC7629E88B4e4D4E35Ee3Fb0E4e349FEFd0A9c";
 
   const pins2NFTAbi =
     require("./Inst2NFT.json").abi;
