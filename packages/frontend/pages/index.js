@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import { useSession } from "next-auth/react";
-import Pins from "../components/pins";
+import Inst from "../components/inst";
 
 export default function Index(pageProps) {
   const { data: session, status } = useSession();
@@ -10,7 +10,7 @@ export default function Index(pageProps) {
       {session && (
         <>
           <div>
-            <Pins user_id={session}></Pins>
+            <Inst user_id={session}></Inst>
           </div>
         </>
       )}
