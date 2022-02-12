@@ -4,7 +4,6 @@ import Inst from "../components/inst";
 
 export default function Index(pageProps) {
   const { data: session, status } = useSession();
-
   return (
     <>
       {session && (

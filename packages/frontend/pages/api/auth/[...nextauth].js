@@ -1,5 +1,5 @@
 import NextAuth from "next-auth";
-const request = require("superagent");
+const superagent = require("superagent");
 
 export default NextAuth({
   providers: [
@@ -44,9 +44,32 @@ export default NextAuth({
             profile.email = profile.username;
           }
           const url = `https://graph.facebook.com/instagram/picture?redirect=false`;
-          const res = await request.get(url);
+          const res = await superagent.get(url);
           profile.image = JSON.parse(res.text).data.url;
-          profile.media.data.map(console.log);
+
+          const list = profile.media.data;
+
+          const functionThatReturnsAPromise = async (item) => {
+            //a function that returns a promise
+            console.log("item:", item);
+            console.log(tokens.access_token);
+            const url = `https://graph.instagram.com/${item.id}/?fields=media_url`;
+            const res = await superagent
+              .get(url)
+              .query({ access_token: tokens.access_token });
+            console.log("res", res.text);
+            return Promise.resolve(await JSON.parse(res.text).media_url);
+          };
+
+          const doSomethingAsync = async (item) => {
+            return functionThatReturnsAPromise(item);
+          };
+
+          const getData = async () => {
+            return Promise.all(list.map((item) => doSomethingAsync(item)));
+          };
+
+          profile.mediaUrlArray = await getData();
           return profile;
         },
       },
@@ -81,11 +104,44 @@ export default NextAuth({
     strategy: "jwt",
   },
 
-  jwt: {},
+  jwt: {
+    maxAge: 1 * 24 * 60 * 60, // 1 days
+    // The maximum age of the NextAuth.js issued JWT in seconds.
+    // Defaults to `session.maxAge`.
+    // maxAge: 60 * 60 * 24 * 30,
+    // You can define your own encode/decode functions for signing and encryption
+  },
 
   pages: {},
 
-  callbacks: {},
+  callbacks: {
+    jwt: async ({ token, user, account, profile, isNewUser }) => {
+      const isSignIn = user ? true : false;
+      // Add auth_time to token on signin in
+      if (isSignIn) {
+        token.auth_time = Math.floor(Date.now() / 1000);
+      }
+      if (user && profile) {
+        token.profile = profile;
+      }
+      return Promise.resolve(token);
+    },
+    session: async ({ session, token }) => {
+      //  console.log("token", token);
+      if (session && token?.profile) {
+        session.profile = token.profile;
+      }
+      //  console.log("session", session);
+      if (!session?.user || !token?.account) {
+        return session;
+      }
+
+      session.user.id = token.account.id;
+      session.accessToken = token.account.accessToken;
+
+      return session;
+    },
+  },
 
   events: {},
 

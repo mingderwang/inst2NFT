@@ -1,4 +1,4 @@
-// fetch a list of pins2NFT token data by account from etherscan
+// fetch a list of inst2NFT token data by account from etherscan
 const {
   ETHERSCAN_API_URL,
   ETHERSCAN_API,
