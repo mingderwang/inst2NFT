@@ -46,30 +46,35 @@ export default NextAuth({
           const url = `https://graph.facebook.com/instagram/picture?redirect=false`;
           const res = await superagent.get(url);
           profile.image = JSON.parse(res.text).data.url;
+          console.log("profile", profile);
+          if (typeof profile.media === "undefined") {
+            profile.mediaUrlArray = [];
+          } else {
+            console.log("profile.media !== undefined");
+            const list = profile.media.data;
 
-          const list = profile.media.data;
+            const functionThatReturnsAPromise = async (item) => {
+              //a function that returns a promise
+              console.log("item:", item);
+              console.log(tokens.access_token);
+              const url = `https://graph.instagram.com/${item.id}/?fields=media_url`;
+              const res = await superagent
+                .get(url)
+                .query({ access_token: tokens.access_token });
+              console.log("res", res.text);
+              return Promise.resolve(await JSON.parse(res.text).media_url);
+            };
 
-          const functionThatReturnsAPromise = async (item) => {
-            //a function that returns a promise
-            console.log("item:", item);
-            console.log(tokens.access_token);
-            const url = `https://graph.instagram.com/${item.id}/?fields=media_url`;
-            const res = await superagent
-              .get(url)
-              .query({ access_token: tokens.access_token });
-            console.log("res", res.text);
-            return Promise.resolve(await JSON.parse(res.text).media_url);
-          };
+            const doSomethingAsync = async (item) => {
+              return functionThatReturnsAPromise(item);
+            };
 
-          const doSomethingAsync = async (item) => {
-            return functionThatReturnsAPromise(item);
-          };
+            const getData = async () => {
+              return Promise.all(list.map((item) => doSomethingAsync(item)));
+            };
 
-          const getData = async () => {
-            return Promise.all(list.map((item) => doSomethingAsync(item)));
-          };
-
-          profile.mediaUrlArray = await getData();
+            profile.mediaUrlArray = await getData();
+          }
           return profile;
         },
       },
@@ -79,15 +84,26 @@ export default NextAuth({
       profile(profile, accessToken) {
         console.log("profile.token", accessToken);
         console.log("profile.profile", profile);
-        return {
-          id: profile.id,
-          name: profile.username,
-          email: profile.email,
-          image: profile.image,
-          account_type: profile.account_type,
-          media_count: profile.media_count,
-          media: profile.media.data,
-        };
+        if (typeof profile.media === "undefined") {
+          return {
+            id: profile.id,
+            name: profile.username,
+            email: profile.email,
+            image: profile.image,
+            account_type: profile.account_type,
+            media_count: profile.media_count,
+          };
+        } else {
+          return {
+            id: profile.id,
+            name: profile.username,
+            email: profile.email,
+            image: profile.image,
+            account_type: profile.account_type,
+            media_count: profile.media_count,
+            media: profile.media.data,
+          };
+        }
       },
       checks: "none",
       headers: {},

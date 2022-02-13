@@ -23,7 +23,7 @@ export default function Header() {
           {!session && (
             <>
               <span className={styles.notSignedInText}>
-                You are not signed in
+                You are not signed in Instagram yet.
               </span>
               <a
                 href={`/api/auth/signin`}
