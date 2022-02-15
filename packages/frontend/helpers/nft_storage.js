@@ -9,10 +9,10 @@ const create = async (JsonItem, callback) => {
   JsonItem.image_thumbnail_url;
   const jsonse = JsonItem;
   const obj = {
-    name: JsonItem.description,
-    description: JsonItem.board.description,
-    external_url: JsonItem.link,
-    image: JsonItem.images["564x"].url,
+    name: "",
+    description: "",
+    external_url: "",
+    image: JsonItem,
   };
   const metadata = new Blob([JSON.stringify(obj)], {
     type: "application/json",

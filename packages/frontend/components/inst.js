@@ -4,30 +4,35 @@ import { nft_storage } from "../helpers";
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function Inst({ ...props }) {
-  console.log("Inst.progs ------>   ", props);
+  //console.log("Inst.progs ------>   ", props.user_id.profile);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
-  const { data, error } = useSWR(
-    `/api/inst/${props.user_id.user.name}`,
-    fetcher
-  );
+  const { data, error } = useSWR(`/api/auth/session`, fetcher);
+
+  useEffect(() => {
+    if (typeof inst !== "undefined" && inst.length === 0) {
+      callback("3");
+    }
+  }, [data]);
+
   if (error) return <div>Failed to load</div>;
   if (!data) return <div>Loading...</div>;
-  const pins = data;
-
-  const callback = (data) => {
-    console.log("show Alert", data);
+  const inst = data.profile.mediaUrlArray;
+  //console.log("inst", inst);
+  function callback(data) {
+    //console.log("show Alert", data);
     switch (data) {
+      case "3":
+        setAlertMessage("No media posted in your Instagram account.");
+        setShowAlert(true);
+        break;
       case "1":
-        console.log("1");
         setAlertMessage("NFT is generated successfully. View it on OpenSea");
         setTimeout(() => {
           setShowAlert(false);
         }, 5000);
-
         break;
       case "2":
-        console.log("2");
         setAlertMessage("NFT Minting is canceled.");
         setTimeout(() => {
           setShowAlert(false);
@@ -35,13 +40,12 @@ export default function Inst({ ...props }) {
         break;
       case "0":
         setAlertMessage("Please, confirm in your Metamask.");
-        console.log("0");
         setShowAlert(true);
         break;
       default:
         console.log(`callback case error`);
     }
-  };
+  }
 
   function jsony(a) {
     return Object.entries(a)
@@ -81,11 +85,11 @@ export default function Inst({ ...props }) {
         </div>
       )}
       <div className="flex flex-wrap">
-        {pins.map((pin, i) => (
+        {inst.map((pin, i) => (
           <div className="flex flex-nowrap">
             <div className="card w-72 card-bordered card-compact lg:card-normal">
               <figure>
-                <img src={`${pin.images["237x"].url}`}></img>
+                <img src={`${pin}`}></img>
               </figure>
               <div className="card-body">
                 <p>{pin.description}</p>

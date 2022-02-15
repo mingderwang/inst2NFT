@@ -23,7 +23,7 @@ export default function Header() {
           {!session && (
             <>
               <span className={styles.notSignedInText}>
-                You are not signed in
+                You are not signed in Instagram yet.
               </span>
               <a
                 href={`/api/auth/signin`}
@@ -70,11 +70,8 @@ export default function Header() {
           <span class="text-lg font-bold">Inst2NFT</span>
         </div>
         <div class="flex-1 px-2 mx-2">
-          <div class="items-stretch hidden lg:flex">
-            <Link href="/">
-              <a class="btn btn-ghost btn-sm rounded-btn">Home</a>
-            </Link>
-            <Link href="https://testnets.opensea.io/collection/pins2nft-v2">
+          <div class="items-stretch">
+            <Link href="https://testnets.opensea.io/collection/inst2nft">
               <a class="btn btn-ghost btn-sm rounded-btn">View On OpenSea</a>
             </Link>
           </div>

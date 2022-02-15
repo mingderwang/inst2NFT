@@ -11,6 +11,7 @@ export async function middleware(req) {
         process.env.NEXTAUTH_URL?.startsWith("https://") ??
         !!process.env.VERCEL_URL,
     });
+    console.log("getToken.to.session", session);
     // You could also check for any property on the session object,
     // like role === "admin" or name === "John Doe", etc.
     if (!session) return NextResponse.redirect("/api/auth/signin");
