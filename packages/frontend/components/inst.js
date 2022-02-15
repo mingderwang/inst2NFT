@@ -17,8 +17,11 @@ export default function Inst({ ...props }) {
 
   if (error) return <div>Failed to load</div>;
   if (!data) return <div>Loading...</div>;
-  const inst = data.profile.mediaUrlArray;
-  //console.log("inst", inst);
+  let inst = data.profile?.mediaUrlArray;
+  if (typeof inst === undefined || inst === undefined) {
+    inst = [];
+  }
+  console.log("inst", inst);
   function callback(data) {
     //console.log("show Alert", data);
     switch (data) {
