@@ -6,13 +6,16 @@ const create = async (JsonItem, callback) => {
   callback("0"); // start alter
   const apiKey = NFT_STORAGE_KEY;
   const client = new NFTStorage({ token: apiKey });
-  JsonItem.image_thumbnail_url;
-  const jsonse = JsonItem;
   const obj = {
-    name: "",
-    description: "",
-    external_url: "",
-    image: JsonItem,
+    name: JsonItem.caption ? JsonItem.caption : "Unknown",
+    description: JsonItem.caption ? JsonItem.caption : "",
+    external_url: JsonItem.permalink,
+    image: JsonItem.media_url,
+    creater: JsonItem.username,
+    created_at: JsonItem.timestamp,
+    media_type: JsonItem.media_type,
+    id: JsonItem.id,
+    created_with: "https://inst.2nft.me/",
   };
   const metadata = new Blob([JSON.stringify(obj)], {
     type: "application/json",

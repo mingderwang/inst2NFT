@@ -21,7 +21,6 @@ export default function Inst({ ...props }) {
   if (typeof inst === undefined || inst === undefined) {
     inst = [];
   }
-  console.log("inst", inst);
   function callback(data) {
     //console.log("show Alert", data);
     switch (data) {
@@ -92,10 +91,12 @@ export default function Inst({ ...props }) {
           <div className="flex flex-nowrap">
             <div className="card w-72 card-bordered card-compact lg:card-normal">
               <figure>
-                <img src={`${pin}`}></img>
+                <img src={`${pin.media_url}`}></img>
               </figure>
               <div className="card-body">
-                <p>{pin.description}</p>
+                <p>{pin.caption}</p>
+                <p>{pin.username}</p>
+                <p>{pin.timestamp}</p>
                 <div className="justify-end card-actions">
                   {!showAlert && (
                     <button
