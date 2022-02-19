@@ -65,24 +65,26 @@ export default function Header() {
         </p>
       </div>
 
-      <div class="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box">
-        <div class="flex-none px-2 mx-2">
-          <span class="text-lg font-bold">Inst2NFT</span>
+      <div className="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box">
+        <div className="flex-none px-2 mx-2">
+          <span className="text-lg font-bold">Inst2NFT</span>
         </div>
-        <div class="flex-1 px-2 mx-2">
-          <div class="items-stretch">
+        <div className="flex-1 px-2 mx-2">
+          <div className="items-stretch">
             <Link href="https://testnets.opensea.io/collection/inst2nft">
-              <a class="btn btn-ghost btn-sm rounded-btn">View On OpenSea</a>
+              <a className="btn btn-ghost btn-sm rounded-btn">
+                View On OpenSea
+              </a>
             </Link>
           </div>
         </div>
-        <div class="flex-none">
-          <button class="btn btn-square btn-ghost">
+        <div className="flex-none">
+          <button className="btn btn-square btn-ghost">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              class="inline-block w-6 h-6 stroke-current"
+              className="inline-block w-6 h-6 stroke-current"
             >
               <path
                 stroke-linecap="round"
@@ -93,13 +95,13 @@ export default function Header() {
             </svg>
           </button>
         </div>
-        <div class="flex-none">
-          <button class="btn btn-square btn-ghost">
+        <div className="flex-none">
+          <button className="btn btn-square btn-ghost">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              class="inline-block w-6 h-6 stroke-current"
+              className="inline-block w-6 h-6 stroke-current"
             >
               <path
                 stroke-linecap="round"
