@@ -3,7 +3,8 @@ export var provider;
 export var signer;
 export const connectMetamask = async (
   accountChangedCallback,
-  networkChangedCallback
+  networkChangedCallback,
+  disconnectCallback
 ) => {
   if (typeof window !== "undefined") {
     if (typeof window.ethereum === "undefined") {
@@ -12,8 +13,9 @@ export const connectMetamask = async (
     } else {
       window.ethereum.on("accountsChanged", accountChangedCallback);
       window.ethereum.on("chainChanged", networkChangedCallback);
+      window.ethereum.on("disconnect", disconnectCallback);
       provider = new ethers.providers.Web3Provider(window.ethereum, "any");
-      // Prompt user for account connections
+      // Prompt user for account connection
       await provider.send("eth_requestAccounts", []);
       signer = provider.getSigner();
       const address = await signer.getAddress();

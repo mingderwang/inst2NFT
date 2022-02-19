@@ -26,11 +26,23 @@ const MyApp = ({ Component, pageProps }) => {
     setCorrectNetwork(_chainId === DEFAULT_NETWORK ? true : false);
   }
 
+  function disconnected(_chainId) {
+    // Time to reload your interface with the new networkId
+    setNetwork("");
+    setAddress("");
+    setCorrectNetwork(false);
+  }
+
   const connect = async () => {
     const { address, network } = await connectMetamask(
       accountChanged,
-      networkChanged
+      networkChanged,
+      disconnected
     );
+
+    if (address === "no metamask") {
+      setHasMetamask(false);
+    }
     if (address === "no account" || address === "no metamask") {
     } else {
       setNetwork(network);
@@ -41,6 +53,12 @@ const MyApp = ({ Component, pageProps }) => {
     setCorrectNetwork(network === DEFAULT_NETWORK ? true : false);
     if (correctNetwork) {
       console.log("......correct network", network);
+    }
+  };
+
+  const shortAddress = (address) => {
+    if (address.length === 42) {
+      return address.slice(0, 6).concat("...".concat(address.slice(-4)));
     }
   };
 
@@ -76,7 +94,7 @@ const MyApp = ({ Component, pageProps }) => {
 
                 {connectted && correctNetwork && (
                   <div>
-                    <p>{address}</p>
+                    <p>{shortAddress(address)}</p>
                   </div>
                 )}
 
