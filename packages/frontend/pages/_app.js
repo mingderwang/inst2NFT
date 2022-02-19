@@ -83,7 +83,7 @@ const MyApp = ({ Component, pageProps }) => {
                 {!connectted && hasMetamask && (
                   <div>
                     <button
-                      class="btn btn-primary"
+                      className="btn btn-primary"
                       type="button"
                       onClick={connect}
                     >
@@ -102,21 +102,21 @@ const MyApp = ({ Component, pageProps }) => {
                   <>
                     <a
                       href="/components/modal#my-modal"
-                      class="btn btn-primary"
+                      className="btn btn-primary"
                     >
                       connect
                     </a>
-                    <div id="my-modal" class="modal">
-                      <div class="modal-box">
+                    <div id="my-modal" className="modal">
+                      <div className="modal-box">
                         <p>Please install Metamask (Wallet) first.</p>
-                        <div class="modal-action">
+                        <div className="modal-action">
                           <a
                             href="https://metamask.io/"
-                            class="btn btn-primary"
+                            className="btn btn-primary"
                           >
                             Metamask Home Page
                           </a>
-                          <a href="/" class="btn">
+                          <a href="/" className="btn">
                             Cancel
                           </a>
                         </div>

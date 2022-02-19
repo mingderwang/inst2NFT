@@ -1,18 +1,18 @@
 export default function Service() {
   return (
-    <section class="relative py-16 bg-white min-w-screen animation-fade animation-delay">
-      <div class="container px-0 px-8 mx-auto sm:px-12 xl:px-5">
-        <p class="text-xs font-bold text-left text-pink-500 uppercase sm:mx-6 sm:text-center sm:text-normal sm:font-bold">
+    <section className="relative py-16 bg-white min-w-screen animation-fade animation-delay">
+      <div className="container px-0 px-8 mx-auto sm:px-12 xl:px-5">
+        <p className="text-xs font-bold text-left text-pink-500 uppercase sm:mx-6 sm:text-center sm:text-normal sm:font-bold">
           To use on your own risk and responsibility.
         </p>
-        <h3 class="mt-1 text-2xl font-bold text-left text-gray-800 sm:mx-6 sm:text-3xl md:text-4xl lg:text-5xl sm:text-center sm:mx-0">
+        <h3 className="mt-1 text-2xl font-bold text-left text-gray-800 sm:mx-6 sm:text-3xl md:text-4xl lg:text-5xl sm:text-center sm:mx-0">
           Terms of Service
         </h3>
-        <div class="w-full px-6 py-6 mx-auto mt-10 bg-white border border-gray-200 rounded-lg sm:px-8 md:px-12 sm:py-8 sm:shadow lg:w-5/6 xl:w-2/3">
-          <h3 class="text-lg font-bold text-purple-500 sm:text-xl md:text-2xl">
+        <div className="w-full px-6 py-6 mx-auto mt-10 bg-white border border-gray-200 rounded-lg sm:px-8 md:px-12 sm:py-8 sm:shadow lg:w-5/6 xl:w-2/3">
+          <h3 className="text-lg font-bold text-purple-500 sm:text-xl md:text-2xl">
             To know what you are doing!
           </h3>
-          <p class="mt-2 text-base text-gray-600 sm:text-lg md:text-normal">
+          <p className="mt-2 text-base text-gray-600 sm:text-lg md:text-normal">
             NFT is a very new term in the digital world. And most of the people
             don't really know what the NFT really is. We just provide a tool for
             you to create a NFT (token) with a metadata to link to your (own)
@@ -24,11 +24,11 @@ export default function Service() {
             on Instagram or Facebook.
           </p>
         </div>
-        <div class="w-full px-6 py-6 mx-auto mt-10 bg-white border border-gray-200 rounded-lg sm:px-8 md:px-12 sm:py-8 sm:shadow lg:w-5/6 xl:w-2/3">
-          <h3 class="text-lg font-bold text-purple-500 sm:text-xl md:text-2xl">
+        <div className="w-full px-6 py-6 mx-auto mt-10 bg-white border border-gray-200 rounded-lg sm:px-8 md:px-12 sm:py-8 sm:shadow lg:w-5/6 xl:w-2/3">
+          <h3 className="text-lg font-bold text-purple-500 sm:text-xl md:text-2xl">
             What you can do with these NFTs?
           </h3>
-          <p class="mt-2 text-base text-gray-600 sm:text-lg md:text-normal">
+          <p className="mt-2 text-base text-gray-600 sm:text-lg md:text-normal">
             After you convert your media to NFTs, you can own and keep your
             ownership of NFTs, or trading them on NFT marketplaces like OpenSea.
             Or even simplly transfer them to any other person via any Ethereum
