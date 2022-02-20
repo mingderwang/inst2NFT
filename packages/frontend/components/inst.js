@@ -4,7 +4,6 @@ import { nft_storage } from "../helpers";
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function Inst({ ...props }) {
-  //console.log("Inst.progs ------>   ", props.user_id.profile);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const { data, error } = useSWR(`/api/auth/session`, fetcher);
@@ -56,7 +55,7 @@ export default function Inst({ ...props }) {
   }
 
   async function createInst(pin) {
-    const result = await nft_storage.create(pin, callback);
+    const result = await nft_storage.create(pin, callback, window.$provider);
     return result;
   }
 
@@ -77,7 +76,7 @@ export default function Inst({ ...props }) {
             >
               <path
                 strokeLinecap="round"
-                stroke-linejoin="round"
+                strokeLinejoin="round"
                 strokeWidth="2"
                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               ></path>

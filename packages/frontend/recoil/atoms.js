@@ -1,5 +1,4 @@
 import { atom } from "recoil";
-import { selector } from "recoil";
 
 export const pinsListState = atom({
   key: "pinsListState-key",
