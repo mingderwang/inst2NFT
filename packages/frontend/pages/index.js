@@ -9,7 +9,7 @@ function Index({ nft_storage_key }) {
       {session && (
         <>
           <div>
-            <Inst user_id={session} nft_storage_key={nft_storage_key}></Inst>
+            <Inst nft_storage_key={nft_storage_key}></Inst>
           </div>
         </>
       )}
