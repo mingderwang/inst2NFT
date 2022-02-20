@@ -34,14 +34,17 @@ export default function Inst({ ...props }) {
         }, 5000);
         break;
       case "2":
-        setAlertMessage("NFT Minting is canceled.");
+        setAlertMessage("NFT minting is canceled.");
         setTimeout(() => {
           setShowAlert(false);
         }, 5000);
         break;
       case "0":
-        setAlertMessage("Please, confirm in your Metamask.");
+        setAlertMessage("Please, confirm in your wallet, or Metamask.");
         setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 30000);
         break;
       default:
         console.log(`callback case error`);
