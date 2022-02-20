@@ -1,18 +1,24 @@
-import useSWR from "swr";
 import { useSession } from "next-auth/react";
 import Inst from "../components/inst";
 
-export default function Index(pageProps) {
+function Index({ nft_storage_key }) {
   const { data: session, status } = useSession();
+
   return (
     <>
       {session && (
         <>
           <div>
-            <Inst user_id={session}></Inst>
+            <Inst user_id={session} nft_storage_key={nft_storage_key}></Inst>
           </div>
         </>
       )}
     </>
   );
 }
+
+Index.getInitialProps = () => {
+  return { nft_storage_key: process.env.NFT_STORAGE_KEY };
+};
+
+export default Index;

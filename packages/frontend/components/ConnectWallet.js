@@ -1,6 +1,6 @@
 // _app.js
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { useEffect, useReducer, useCallback } from "react";
+import { useState, useEffect, useReducer, useCallback } from "react";
 import React from "react";
 import WalletLink from "walletlink";
 import Web3Modal from "web3modal";
@@ -95,6 +95,7 @@ const shortAddress = (address, width) => {
 };
 
 function ConnectWallet() {
+  const [showAlert, setShowAlert] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
   const { provider, web3Provider, address, chainId } = state;
   const onlyNetwork = `(This App Only for ${DEFAULT_NETWORK})`;
@@ -102,25 +103,27 @@ function ConnectWallet() {
   const connect = useCallback(async function () {
     // This is the initial `provider` that is returned when
     // using web3Modal to connect. Can be MetaMask or WalletConnect.
-    provider = await web3Modal.connect();
+    try {
+      provider = await web3Modal.connect();
 
-    // We plug the initial `provider` into ethers.js and get back
-    // a Web3Provider. This will add on methods from ethers.js and
-    // event listeners such as `.on()` will be different.
-    const web3Provider = new providers.Web3Provider(provider);
+      // We plug the initial `provider` into ethers.js and get back
+      // a Web3Provider. This will add on methods from ethers.js and
+      // event listeners such as `.on()` will be different.
+      const web3Provider = new providers.Web3Provider(provider);
+      const signer = web3Provider.getSigner();
+      const address = await signer.getAddress();
 
-    const signer = web3Provider.getSigner();
-    const address = await signer.getAddress();
-
-    const network = await web3Provider.getNetwork();
-
-    dispatch({
-      type: "SET_WEB3_PROVIDER",
-      provider,
-      web3Provider,
-      address,
-      chainId: network.chainId,
-    });
+      const network = await web3Provider.getNetwork();
+      dispatch({
+        type: "SET_WEB3_PROVIDER",
+        provider,
+        web3Provider,
+        address,
+        chainId: network.chainId,
+      });
+    } catch (error) {
+      console.log("web3Modal error", error);
+    }
   }, []);
 
   const disconnect = useCallback(

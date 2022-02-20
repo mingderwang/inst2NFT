@@ -4,6 +4,7 @@ import { nft_storage } from "../helpers";
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function Inst({ ...props }) {
+  const nft_storage_key = props.nft_storage_key;
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const { data, error } = useSWR(`/api/auth/session`, fetcher);
@@ -58,7 +59,7 @@ export default function Inst({ ...props }) {
   }
 
   async function createInst(pin) {
-    const result = await nft_storage.create(pin, callback, window.$provider);
+    const result = await nft_storage.create(pin, callback, nft_storage_key);
     return result;
   }
 
@@ -90,7 +91,7 @@ export default function Inst({ ...props }) {
       )}
       <div className="flex flex-wrap">
         {inst.map((pin, i) => (
-          <div className="flex flex-nowrap">
+          <div className="flex flex-nowrap" key={i}>
             <div className="card w-72 card-bordered card-compact lg:card-normal">
               <figure>
                 <img src={`${pin.media_url}`}></img>

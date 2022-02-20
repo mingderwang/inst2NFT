@@ -1,9 +1,7 @@
 import { toGatewayURL, NFTStorage, Blob } from "nft.storage";
 import { Contract, providers } from "ethers";
 
-const { NFT_STORAGE_KEY } = require("../.secret.json");
-
-const create = async (JsonItem, callback) => {
+const create = async (JsonItem, callback, NFT_STORAGE_KEY) => {
   callback("0"); // start alter
   const apiKey = NFT_STORAGE_KEY;
   const client = new NFTStorage({ token: apiKey });
@@ -35,15 +33,11 @@ export const nft_storage = {
 };
 
 export const callContract = async (TokenURI, mintFailCallback) => {
-  const provider = window.$provider;
-  const inst2NFTAddress = "0x074DB1360727588E9D3cFd1fef79a9573037B68e"; // TODO need to change when contract ddress changed
+  const inst2NFTAddress = "0x074DB1360727588E9D3cFd1fef79a9573037B68e"; // TODO, move this to process.env
   const pins2NFTAbi = require("./Inst2NFT.json").abi;
-  const web3Provider = new providers.Web3Provider(provider);
-
+  const web3Provider = new providers.Web3Provider(window.$provider);
   const signer = web3Provider.getSigner();
-  const pins2NFT_ro = new Contract(inst2NFTAddress, pins2NFTAbi, web3Provider);
   const pins2NFT_rw = new Contract(inst2NFTAddress, pins2NFTAbi, signer);
-  const balance = await pins2NFT_ro.name();
   try {
     const tx = await pins2NFT_rw.freeMint(signer.getAddress(), TokenURI);
     console.log("freemint", tx);
