@@ -1,5 +1,21 @@
 const supportedChains = [
   {
+    name: "Ploygon Mainnet",
+    short_name: "polygon",
+    chain: "MATIC",
+    network: "mainnet",
+    chain_id: 137,
+    network_id: 137,
+    rpc_url: "https://polygon-mainnet.infura.io/v3/%API_KEY%",
+    native_currency: {
+      symbol: "MATIC",
+      name: "Matic",
+      decimals: "18",
+      contractAddress: "",
+      balance: "",
+    },
+  },
+  {
     name: "Ethereum Mainnet",
     short_name: "eth",
     chain: "ETH",
