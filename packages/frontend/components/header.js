@@ -71,7 +71,7 @@ export default function Header() {
         </div>
         <div className="flex-1 px-2 mx-2">
           <div className="items-stretch">
-            <Link href="https://testnets.opensea.io/collection/inst2nft">
+            <Link href="https://opensea.io/collection/inst2nft">
               <a className="btn btn-ghost btn-sm rounded-btn">
                 View On OpenSea
               </a>
