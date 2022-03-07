@@ -9,7 +9,7 @@ import "solidity-coverage";
 import "@openzeppelin/hardhat-upgrades";
 
 dotenv.config();
-const defaultNetwork = "rinkeby";
+const defaultNetwork = "polygon";
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -38,10 +38,15 @@ const config: HardhatUserConfig = {
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
+    polygon: {
+      url: process.env.POLYGON_URL || "",
+      chainId: 137,
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
     polygon_testnet: {
       url: process.env.POLYGON_TEST_URL || "",
       chainId: 80001,
-      gasPrice: 20000000000,
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
