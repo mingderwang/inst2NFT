@@ -24,7 +24,7 @@ export default function DeleteUserData() {
           </h3>
           <p className="mt-2 text-base text-gray-600 sm:text-lg md:text-normal">
             Sorry, you can't. NFT is a kind of token which registers itself on
-            blockchains. And it stores its metadata on IFPS, which is a
+            blockchains. And it stores its metadata on IPFS, which is a
             permanent storage, no one can mutate it. So, there is no way to
             remove your post from NFTs.
           </p>
