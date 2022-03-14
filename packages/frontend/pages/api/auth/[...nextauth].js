@@ -22,7 +22,7 @@ export default NextAuth({
               },
             }
           );
-          //console.log("response ====", response);
+          console.log("response ====", response);
           return { tokens: response };
         },
       },
@@ -36,8 +36,8 @@ export default NextAuth({
         url: "https://graph.instagram.com/me?fields=id, username, account_type, media_count, media",
         async request({ client, tokens }) {
           // Get base profile
-          //console.log("userinfo.client", client);
-          //console.log("userinfo.tokens", tokens);
+          console.log("userinfo.client", client);
+          console.log("userinfo.tokens", tokens);
           const profile = await client.userinfo(tokens);
           // no email info from Pinterest API
           if (!profile.email) {
@@ -46,7 +46,7 @@ export default NextAuth({
           const url = `https://graph.facebook.com/instagram/picture?redirect=false`;
           const res = await superagent.get(url);
           profile.image = JSON.parse(res.text).data.url;
-          //console.log("profile", profile);
+          console.log("profile", profile);
           if (typeof profile.media === "undefined") {
             profile.mediaUrlArray = [];
           } else {
