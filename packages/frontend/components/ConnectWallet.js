@@ -7,9 +7,7 @@ import Web3Modal from "web3modal";
 import { providers } from "ethers";
 import { getChainData } from "../helpers";
 
-const { DEFAULT_NETWORK } = require("../.secret.json");
-
-const INFURA_ID = "460f40a260564ac4a4f4b3fffb032dad";
+const { DEFAULT_NETWORK, INFURA_ID } = require("../.secret.json");
 
 const providerOptions = {
   walletconnect: {
