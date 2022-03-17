@@ -18,7 +18,7 @@ export default function Service() {
             you to create a NFT (token) with a metadata to link to your (own)
             media or any other digital contents. That's it. When you own the
             token, you are the owner of the token. It doesn't really mean you
-            are the owner or creater of the original contents. Everyone should
+            are the owner or creator of the original contents. Everyone should
             be ware of the copyright issues and the NFT legally means. This tool
             or service is just help you to create a NFT from your posted media
             on Instagram or Facebook.

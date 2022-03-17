@@ -33,7 +33,7 @@ export default NextAuth({
         },
       },
       userinfo: {
-        url: "https://graph.instagram.com/me?fields=id, username, account_type, media_count, media",
+        url: "https://graph.instagram.com/me?fields=id, username, account_type, media",
         async request({ client, tokens }) {
           // Get base profile
           //console.log("userinfo.client", client);
@@ -91,7 +91,6 @@ export default NextAuth({
             email: profile.email,
             image: profile.image,
             account_type: profile.account_type,
-            media_count: profile.media_count,
           };
         } else {
           return {
@@ -100,7 +99,6 @@ export default NextAuth({
             email: profile.email,
             image: profile.image,
             account_type: profile.account_type,
-            media_count: profile.media_count,
             media: profile.media.data,
           };
         }

@@ -8,10 +8,10 @@ const create = async (JsonItem, callback, NFT_STORAGE_KEY) => {
   const client = new NFTStorage({ token: apiKey });
   const obj = {
     name: JsonItem.caption ? JsonItem.caption : "Unknown",
-    description: JsonItem.caption ? JsonItem.caption : "",
+    description: `From ${JsonItem.username}'s Instagram`,
     external_url: JsonItem.permalink,
     image: JsonItem.media_url,
-    creater: JsonItem.username,
+    creator: JsonItem.username,
     created_at: JsonItem.timestamp,
     media_type: JsonItem.media_type,
     id: JsonItem.id,
