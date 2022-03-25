@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import styles from "./header.module.css";
-import { getSettings } from "../helpers";
+import { getOpenseaURL } from "../helpers";
 import { useEffect, useState } from "react";
 
 // The approach used in this component shows how to build a sign in and sign out
@@ -9,13 +9,12 @@ import { useEffect, useState } from "react";
 // rendering, and avoids any flash incorrect content on initial page load.
 export default function Header() {
   const { data: session, status } = useSession();
-  const [openseaURL, setOpenseaURL] = useState("");
+  const [openseaURL, setOpenseaURL] = useState("/");
   const loading = status === "loading";
 
   useEffect(async () => {
-    const { defaultNetwork, networks } = await getSettings();
-    const currentNetwork = networks[defaultNetwork];
-    setOpenseaURL(currentNetwork.openseaURL);
+    const { openseaurl } = await getOpenseaURL();
+    setOpenseaURL(openseaurl);
   }, []);
 
   return (

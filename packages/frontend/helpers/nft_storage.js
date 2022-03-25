@@ -1,6 +1,6 @@
 import { toGatewayURL, NFTStorage, Blob } from "nft.storage";
 import { Contract, providers } from "ethers";
-const { CONTRACT_ADDRESS } = require("../.secret.json");
+import { getContractAddress } from "../helpers";
 
 const create = async (JsonItem, callback, NFT_STORAGE_KEY) => {
   callback("0"); // start alter
@@ -34,10 +34,8 @@ export const nft_storage = {
 };
 
 export const callContract = async (TokenURI, mintFailCallback) => {
-  const inst2NFTAddress = CONTRACT_ADDRESS;
+  const inst2NFTAddress = await getContractAddress();
   console.log("current contract address:", inst2NFTAddress);
-  // "0xD23094F9d4b04A3217Adc38977884d5477d7739D"; // for Polygon Mainet
-  // TODO, move this to process.env.CONTRACT_ADDRESS
   const inst2NFTAbi = require("./Inst2NFT.json").abi;
   const web3Provider = new providers.Web3Provider(window.$provider);
   const signer = web3Provider.getSigner();
