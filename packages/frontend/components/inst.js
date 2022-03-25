@@ -4,7 +4,6 @@ import { nft_storage } from "../helpers";
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function Inst({ ...props }) {
-  const nft_storage_key = props.nft_storage_key;
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const { data, error } = useSWR(`/api/auth/session`, fetcher);
@@ -14,6 +13,13 @@ export default function Inst({ ...props }) {
       callback("3");
     }
   }, [data]);
+
+  useEffect(() => {
+    const initIPFS = async () => {
+      await nft_storage.init();
+    };
+    initIPFS();
+  }, []);
 
   if (error) return <div>Failed to load</div>;
   if (!data) return <div>Loading...</div>;
@@ -59,7 +65,7 @@ export default function Inst({ ...props }) {
   }
 
   async function createInst(pin) {
-    const result = await nft_storage.create(pin, callback, nft_storage_key);
+    const result = await nft_storage.create(pin, callback);
     return result;
   }
 

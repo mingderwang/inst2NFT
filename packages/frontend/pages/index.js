@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import Inst from "../components/inst";
 
-function Index({ nft_storage_key }) {
+function Index() {
   const { data: session, status } = useSession();
 
   return (
@@ -9,16 +9,12 @@ function Index({ nft_storage_key }) {
       {session && (
         <>
           <div>
-            <Inst nft_storage_key={nft_storage_key}></Inst>
+            <Inst></Inst>
           </div>
         </>
       )}
     </>
   );
 }
-
-Index.getInitialProps = () => {
-  return { nft_storage_key: process.env.NFT_STORAGE_KEY };
-};
 
 export default Index;
