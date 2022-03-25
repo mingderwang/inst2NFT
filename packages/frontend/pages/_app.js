@@ -4,6 +4,7 @@ import Layout from "../components/layout";
 import React, { useState, useEffect } from "react";
 import ConnectWallet from "../components/ConnectWallet";
 import "./styles/globals.css";
+// import IpfsComponent from "../components/ipfs"; //      <IpfsComponent></IpfsComponent>
 
 const MyApp = ({ Component, pageProps }) => {
   const [gdpr, setGdpr] = useState(true);
