@@ -7,8 +7,8 @@ var ipfs;
 const init = async () => {
   if (ipfs) return ipfs;
   ipfs = await IPFS.create({ repo: "ok" + Math.random() });
-  const { cid } = await ipfs.add("Hello world");
-  console.info("testing cid", cid.toString());
+  //const { cid } = await ipfs.add("Hello world");
+  //console.info("testing cid", cid.toString());
   return ipfs;
 };
 
