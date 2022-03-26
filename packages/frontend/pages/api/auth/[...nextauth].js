@@ -129,19 +129,15 @@ export default NextAuth({
   pages: {},
 
   callbacks: {
-    jwt: async ({ token, user, account, profile, isNewUser }) => {
-      const isSignIn = user ? true : false;
-      // Add auth_time to token on signin in
-      if (isSignIn) {
-        token.auth_time = Math.floor(Date.now() / 1000);
+    async jwt({ token, account }) {
+      // Persist the OAuth access_token to the token right after signin
+      if (account) {
+        token.accessToken = account.access_token;
       }
-      if (user && profile) {
-        token.profile = profile;
-      }
-      return Promise.resolve(token);
+      return token;
     },
     session: async ({ session, token }) => {
-      //  console.log("token", token);
+      console.log("session callback - token", token);
       if (session && token?.profile) {
         session.profile = token.profile;
       }
