@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const defaultNetwork = "polygon"; // or "polygon"
+const defaultNetwork = "rinkeby"; // or "polygon"
 const TestnetOpenSeaURL = "https://testnets.opensea.io/collection/inst2nft";
 const MainnetOpenSeaURL = "https://opensea.io/collection/inst2nft";
 

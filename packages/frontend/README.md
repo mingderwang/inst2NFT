@@ -23,3 +23,19 @@ index 48eab97..ac54de9 100644
  const TestnetOpenSeaURL = "https://testnets.opensea.io/collection/inst2nft";
  const MainnetOpenSeaURL = "https://opensea.io/collection/inst2nft";
 ```
+
+# vercel for rinkeny (testnet)
+```
+{
+  "version": 2,
+  "alias": ["rinkeby.inst.2nft.me"]
+}
+```
+
+# vercel for polygon (mainnet)
+```
+{
+  "version": 2,
+  "alias": ["polygon.inst.2nft.me"]
+}
+```
