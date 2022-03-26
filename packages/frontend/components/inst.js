@@ -6,7 +6,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 export default function Inst({ ...props }) {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
-  const { data, error } = useSWR(`/api/auth/session`, fetcher);
+  const { data, error } = useSWR(`/api/get-media-list`, fetcher);
 
   useEffect(() => {
     if (typeof inst !== "undefined" && inst.length === 0) {
@@ -23,7 +23,7 @@ export default function Inst({ ...props }) {
 
   if (error) return <div>Failed to load</div>;
   if (!data) return <div>Loading...</div>;
-  let inst = data.profile?.mediaUrlArray;
+  let inst = data;
   if (typeof inst === undefined || inst === undefined) {
     inst = [];
   }

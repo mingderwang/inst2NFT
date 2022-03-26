@@ -137,7 +137,6 @@ export default NextAuth({
       return token;
     },
     session: async ({ session, token }) => {
-      console.log("session callback - token", token);
       if (session && token?.profile) {
         session.profile = token.profile;
       }
