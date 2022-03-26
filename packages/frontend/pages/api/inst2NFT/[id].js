@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   const tokens = await fetch(
     `${ETHERSCAN_API_URL}/api?module=account&action=tokennfttx&contractaddress=${CONTRACT_ADDRESS}&address=${userAccount}&page=1&offset=100&sort=asc&apikey=${ETHERSCAN_API}`
   );
-  console.log("tokens", tokens);
+  console.log("NFT tokens", tokens);
   const data = await tokens.json();
   res.status(200).json(data.result);
 }

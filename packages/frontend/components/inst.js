@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import { useState, useEffect } from "react";
-import { nft_storage } from "../helpers";
+import { ipfs_client } from "../helpers";
 import { useRecoilState } from "recoil";
 import { connectState } from "../recoil/atoms";
 
@@ -20,7 +20,7 @@ export default function Inst({ ...props }) {
 
   useEffect(() => {
     const initIPFS = async () => {
-      await nft_storage.init();
+      await ipfs_client.init();
     };
     initIPFS();
   }, []);
@@ -69,7 +69,7 @@ export default function Inst({ ...props }) {
   }
 
   async function createInst(pin) {
-    const result = await nft_storage.create(pin, callback);
+    const result = await ipfs_client.create(pin, callback);
     return result;
   }
 

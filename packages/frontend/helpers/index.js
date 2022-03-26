@@ -1,4 +1,3 @@
-export * from "./nft_storage";
+export * from "./ipfs_client";
 export * from "./getJWTToken";
-export * from "./getChainId";
 export * from "./getSettings";

@@ -1,7 +1,7 @@
 import { getToken } from "next-auth/jwt";
-const secret = process.env.SECRET;
 
-async function handler(req, res) {
+async function handler(req, _) {
+  const secret = process.env.SECRET;
   const token = await getToken({ req, secret });
   if (token) {
     return token.accessToken;

@@ -1,6 +1,6 @@
 import { toGatewayURL, NFTStorage, Blob } from "nft.storage";
 import { Contract, providers } from "ethers";
-import { getContractAddress } from "../helpers";
+import { getContractAddress } from ".";
 import * as IPFS from "ipfs-core";
 
 var ipfs;
@@ -37,7 +37,7 @@ const create = async (JsonItem, callback) => {
   return { ipfs_url: metadataUrl };
 };
 
-export const nft_storage = {
+export const ipfs_client = {
   create,
   init,
 };
