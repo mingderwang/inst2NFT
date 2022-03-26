@@ -12,6 +12,7 @@ export default async function handler(req, res) {
 
   const functionThatReturnsAPromise = async (item) => {
     //a function that returns a promise
+    // show following on server side.
     //console.log("item:", item);
     //console.log("token", raw_token);
     const url = `https://graph.instagram.com/${item.id}/?fields=media_url,caption,permalink,username,timestamp,media_type`;

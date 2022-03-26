@@ -7,7 +7,7 @@ import Web3Modal from "web3modal";
 import { providers } from "ethers";
 import { useRecoilState } from "recoil";
 import { connectState } from "../recoil/atoms";
-import { getSettings } from "../helpers";
+import { getSettings, getChainById } from "../helpers";
 
 const { INFURA_ID } = require("../.secret.json");
 
@@ -98,6 +98,32 @@ function ConnectWallet() {
   const { provider, web3Provider, address, chainId } = state;
   const [, setConnect2] = useRecoilState(connectState); // impact those convert to NFT buttons
   const [defaultNetwork, setDefaultNetwork] = useState("");
+  const [onNetwork, setOnNetwork] = useState("");
+  const [match, SetMatch] = useState(false);
+
+  function setAndCheck(chainId) {
+    const intChainId = parseInt(chainId, 16); // convert 0x3 to 3
+    const currentNetwork = getChainById(intChainId);
+    if (currentNetwork) {
+      setOnNetwork(currentNetwork);
+    }
+  }
+
+  function setAndCheck2() {
+    //console.log("onNetwork -> ", onNetwork);
+    //console.log("defaultNetwork -> ", defaultNetwork);
+    if (onNetwork === defaultNetwork) {
+      //console.log("matched network .....");
+      SetMatch(true);
+    } else {
+      //console.log("NO matched network .....");
+      SetMatch(false);
+    }
+  }
+
+  useEffect(() => {
+    setAndCheck2();
+  }, [onNetwork, defaultNetwork]);
 
   const connect = useCallback(async function () {
     // This is the initial `provider` that is returned when
@@ -121,6 +147,10 @@ function ConnectWallet() {
         chainId: network.chainId,
       });
       setConnect2(true); // impact those convert to NFT buttons
+      const currentNetwork = getChainById(network.chainId);
+      if (currentNetwork) {
+        setOnNetwork(currentNetwork);
+      }
     } catch (error) {
       console.log("web3Modal error", error);
     }
@@ -146,8 +176,6 @@ function ConnectWallet() {
     setDefaultNetwork(defaultNetwork);
     if (typeof window?.ethereum !== "undefined") {
       window.ethereum.on("accountsChanged", (_accounts) => {
-        console.log("get accounts ", _accounts);
-        console.log(_accounts.length);
         dispatch({
           type: "SET_ADDRESS",
           address: _accounts.length >= 1 ? _accounts[0] : "no account",
@@ -159,10 +187,9 @@ function ConnectWallet() {
           type: "SET_CHAIN_ID",
           chainId: intChainId,
         });
-        console.log("chainId", intChainId);
+        setAndCheck(_chainId);
       });
     }
-    console.log("chainId", chainId); // metamask connect network
   }, []);
 
   return (
@@ -179,10 +206,13 @@ function ConnectWallet() {
         )}
       </div>
       <div className="flex-initial w-64">
-        <div>
-          <p>{chainId}</p> {`(This App Only for ${defaultNetwork})`}
-        </div>
-        {address && shortAddress && (
+        {match && web3Provider && <p>✅ run on {onNetwork} network 🐯 </p>}
+        {!match && (
+          <div>
+            <p> {`❌ (Please use ${defaultNetwork} network.)`}</p>
+          </div>
+        )}
+        {match && address && shortAddress && (
           <div className="grid">
             <div>
               <p>{shortAddress(address, 6)}</p>
