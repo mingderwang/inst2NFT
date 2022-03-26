@@ -1,17 +1,6 @@
 import { atom } from "recoil";
 
-export const pinsListState = atom({
-  key: "pinsListState-key",
-  default: [
-    {
-      id: 1,
-      amount: 10,
-      text: "Found a 10 dollar bill!",
-    },
-    {
-      id: 2,
-      amount: -110,
-      text: "Buyy a new keyboard",
-    },
-  ],
+export const connectState = atom({
+  key: "connectState-key", // unique ID (with respect to other atoms/selectors)
+  default: false, // default value (aka initial value)
 });

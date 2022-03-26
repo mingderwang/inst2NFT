@@ -1,12 +1,16 @@
 import useSWR from "swr";
 import { useState, useEffect } from "react";
 import { nft_storage } from "../helpers";
+import { useRecoilState } from "recoil";
+import { connectState } from "../recoil/atoms";
+
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function Inst({ ...props }) {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const { data, error } = useSWR(`/api/get-media-list`, fetcher);
+  const [connect] = useRecoilState(connectState);
 
   useEffect(() => {
     if (typeof inst !== "undefined" && inst.length === 0) {
@@ -107,7 +111,7 @@ export default function Inst({ ...props }) {
                 <p>{pin.username}</p>
                 <p>{pin.timestamp}</p>
                 <div className="justify-end card-actions">
-                  {!showAlert && (
+                  {!showAlert && connect && (
                     <button
                       type="button"
                       onClick={() => {

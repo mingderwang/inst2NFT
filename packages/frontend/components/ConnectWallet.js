@@ -6,6 +6,8 @@ import WalletLink from "walletlink";
 import Web3Modal from "web3modal";
 import { providers } from "ethers";
 import { getChainData } from "../helpers";
+import { useRecoilState } from "recoil";
+import { connectState } from "../recoil/atoms";
 
 const { DEFAULT_NETWORK, INFURA_ID } = require("../.secret.json");
 
@@ -93,10 +95,10 @@ const shortAddress = (address, width) => {
 };
 
 function ConnectWallet() {
-  const [showAlert, setShowAlert] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
   const { provider, web3Provider, address, chainId } = state;
   const onlyNetwork = `(This App Only for ${DEFAULT_NETWORK})`;
+  const [, setConnect2] = useRecoilState(connectState);
 
   const connect = useCallback(async function () {
     // This is the initial `provider` that is returned when
@@ -119,6 +121,7 @@ function ConnectWallet() {
         address,
         chainId: network.chainId,
       });
+      setConnect2(true);
     } catch (error) {
       console.log("web3Modal error", error);
     }
@@ -133,14 +136,18 @@ function ConnectWallet() {
       dispatch({
         type: "RESET_WEB3_PROVIDER",
       });
+      setConnect2(false);
     },
     [provider]
   );
 
   useEffect(async () => {
     await connect();
+    chainData = getChainData(chainId);
+    console.log("chainId", chainId);
+    console.log("getChainID", chainData);
   }, []);
-  const chainData = getChainData(chainId);
+  var chainData;
 
   return (
     <div className="flex">
@@ -155,7 +162,6 @@ function ConnectWallet() {
           </button>
         )}
       </div>
-
       <div className="flex-initial w-64 ...">
         {address && (
           <div className="grid">
