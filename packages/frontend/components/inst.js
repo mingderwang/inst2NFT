@@ -34,6 +34,10 @@ export default function Inst({ ...props }) {
   function callback(data) {
     //console.log("show Alert", data);
     switch (data) {
+      case "4":
+        setAlertMessage("Copy media to IPFS.");
+        setShowAlert(true);
+        break;
       case "3":
         setAlertMessage("No media posted in your Instagram account.");
         setShowAlert(true);
@@ -69,7 +73,14 @@ export default function Inst({ ...props }) {
   }
 
   async function createInst(pin) {
-    const result = await ipfs_client.create(pin, callback);
+    const { ipfs_image_url } = await ipfs_client.createFromURL(
+      pin.media_url,
+      callback
+    );
+    //console.log("ipfs_image_url", ipfs_image_url);
+    const xx = { ...pin, media_url: ipfs_image_url };
+    //console.log("xx", xx);
+    const result = await ipfs_client.create(xx, callback);
     return result;
   }
 

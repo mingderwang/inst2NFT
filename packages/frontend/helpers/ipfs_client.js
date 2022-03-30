@@ -6,7 +6,7 @@ import * as IPFS from "ipfs-core";
 var ipfs;
 const init = async () => {
   if (ipfs) return ipfs;
-  ipfs = await IPFS.create({ repo: "ok" + Math.random() });
+  ipfs = await IPFS.create({ repo: "ok" + Math.random() }); //TODO? have to have, why
   //const { cid } = await ipfs.add("Hello world");
   //console.info("testing cid", cid.toString());
   return ipfs;
@@ -29,17 +29,32 @@ const create = async (JsonItem, callback) => {
   const metadata = new Blob([JSON.stringify(obj)], {
     type: "application/json",
   });
-
   const { cid } = await node.add(metadata);
   const metadataUrl = "https://ipfs.io/ipfs/" + cid.toString();
   //  const metadataUrl = "https://ipfs.io/ipfs/QmSf2Sc9RJyZMku2GTSD4Ksduj7rdXUz1AjMyAjZGG8W6w";
   const result = await callContract(metadataUrl, callback);
+  //console.log("metadataUrl", metadataUrl);
   return { ipfs_url: metadataUrl };
+};
+
+const createFromURL = async (imageURL, callback) => {
+  callback("4"); // start create image
+  //console.log("4---", imageURL);
+  const node = await init();
+  const request = new Request(imageURL);
+  //console.log("request", request);
+  const res = await fetch(request);
+  const blob = await res.blob();
+  const { cid } = await node.add(blob);
+  const ipfsImageURL = "https://ipfs.io/ipfs/" + cid.toString();
+  //console.log("ipfsImageURL", ipfsImageURL);
+  return { ipfs_image_url: ipfsImageURL };
 };
 
 export const ipfs_client = {
   create,
   init,
+  createFromURL,
 };
 
 export const callContract = async (TokenURI, mintFailCallback) => {
