@@ -78,9 +78,8 @@ export default function Inst({ ...props }) {
       callback
     );
     //console.log("ipfs_image_url", ipfs_image_url);
-    const xx = { ...pin, media_url: ipfs_image_url };
-    //console.log("xx", xx);
-    const result = await ipfs_client.create(xx, callback);
+    const newPin = { ...pin, media_url: ipfs_image_url }; // newPin with ipfs image url
+    const result = await ipfs_client.create(newPin, callback);
     return result;
   }
 

@@ -102,11 +102,10 @@ function ConnectWallet() {
   const [match, SetMatch] = useState(false);
 
   function setAndCheck(chainId) {
+    console.log("chainId", chainId, match);
     const intChainId = parseInt(chainId, 16); // convert 0x3 to 3
     const currentNetwork = getChainById(intChainId);
-    if (currentNetwork) {
-      setOnNetwork(currentNetwork);
-    }
+    setOnNetwork(currentNetwork);
   }
 
   function setAndCheck2() {
@@ -169,6 +168,14 @@ function ConnectWallet() {
     },
     [provider]
   );
+
+  useEffect(() => {
+    if (!match) {
+      setConnect2(false);
+    } else {
+      setConnect2(true);
+    }
+  }, [match]);
 
   useEffect(async () => {
     await connect();
