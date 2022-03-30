@@ -66,12 +66,6 @@ export default function Inst({ ...props }) {
     }
   }
 
-  function jsony(a) {
-    return Object.entries(a)
-      .map(([k, v]) => `${k}: ${v}`) // stringfy an json object a
-      .join(`,\n `);
-  }
-
   async function createInst(pin) {
     const { ipfs_image_url } = await ipfs_client.createFromURL(
       pin.media_url,

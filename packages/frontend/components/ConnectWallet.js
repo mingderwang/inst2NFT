@@ -8,6 +8,7 @@ import { providers } from "ethers";
 import { useRecoilState } from "recoil";
 import { connectState } from "../recoil/atoms";
 import { getSettings, getChainById } from "../helpers";
+import { setConfig } from "next/config";
 
 const { INFURA_ID } = require("../.secret.json");
 
@@ -102,23 +103,28 @@ function ConnectWallet() {
   const [match, SetMatch] = useState(false);
 
   function setAndCheck(chainId) {
-    console.log("chainId", chainId, match);
     const intChainId = parseInt(chainId, 16); // convert 0x3 to 3
     const currentNetwork = getChainById(intChainId);
     setOnNetwork(currentNetwork);
   }
 
   function setAndCheck2() {
-    //console.log("onNetwork -> ", onNetwork);
-    //console.log("defaultNetwork -> ", defaultNetwork);
     if (onNetwork === defaultNetwork) {
-      //console.log("matched network .....");
       SetMatch(true);
     } else {
-      //console.log("NO matched network .....");
       SetMatch(false);
     }
+    setConnect2(match);
   }
+
+  const setAndCheck3 = (a, b) => {
+    const intChainId = parseInt(b, 16);
+    const currentNetwork = getChainById(intChainId);
+    if (a !== "" && a === currentNetwork) {
+      SetMatch(true);
+      setConnect2(true);
+    }
+  };
 
   useEffect(() => {
     setAndCheck2();
@@ -145,11 +151,11 @@ function ConnectWallet() {
         address,
         chainId: network.chainId,
       });
-      setConnect2(true); // impact those convert to NFT buttons
       const currentNetwork = getChainById(network.chainId);
       if (currentNetwork) {
         setOnNetwork(currentNetwork);
       }
+      setAndCheck3(currentNetwork, network.chainId); // include setConnect2(match)
     } catch (error) {
       console.log("web3Modal error", error);
     }
@@ -170,11 +176,7 @@ function ConnectWallet() {
   );
 
   useEffect(() => {
-    if (!match) {
-      setConnect2(false);
-    } else {
-      setConnect2(true);
-    }
+    setConnect2(match);
   }, [match]);
 
   useEffect(async () => {
