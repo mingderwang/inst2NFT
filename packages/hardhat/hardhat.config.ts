@@ -26,7 +26,15 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 
 const config: HardhatUserConfig = {
   defaultNetwork, 
-  solidity: "0.8.2",
+  solidity: {
+    version: "0.8.2",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 1000,
+      },
+    },
+  },
   networks: {
     rinkeby: {
       url: process.env.RINKEBY_URL || "",
