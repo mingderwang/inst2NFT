@@ -118,8 +118,7 @@ function ConnectWallet() {
   }
 
   const setAndCheck3 = (a, b) => {
-    const intChainId = parseInt(b, 16);
-    const currentNetwork = getChainById(intChainId);
+    const currentNetwork = getChainById(b);
     if (a !== "" && a === currentNetwork) {
       SetMatch(true);
       setConnect2(true);
