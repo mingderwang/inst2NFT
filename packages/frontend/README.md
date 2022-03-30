@@ -23,3 +23,16 @@ index 48eab97..ac54de9 100644
  const TestnetOpenSeaURL = "https://testnets.opensea.io/collection/inst2nft";
  const MainnetOpenSeaURL = "https://opensea.io/collection/inst2nft";
 ```
+> also need to change .env INSTAGRAM_CLIENT_SECRET and INSTAGRAM_CLIENT_ID in packages/frontent
+# for rinkeby
+```
+➜  hardhat git:(rinkeby) ✗ npx hardhat verify 0xF44dD72F51C2803d64fa4000169E3cF219d32648 --network rinkeby
+Nothing to compile
+No need to generate any newer typings.
+Successfully submitted source code for contract
+contracts/Inst2NFT.sol:Inst2NFT at 0xF44dD72F51C2803d64fa4000169E3cF219d32648
+for verification on Etherscan. Waiting for verification result...
+
+Successfully verified contract Inst2NFT on Etherscan.
+https://rinkeby.etherscan.io/address/0xF44dD72F51C2803d64fa4000169E3cF219d32648#code
+```
