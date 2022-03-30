@@ -23,9 +23,6 @@ const MyApp = ({ Component, pageProps }) => {
     }
   }, []);
 
-  const onDeny = () => {
-    console.log(`you need to accept for using this app.`);
-  };
   const onAccept = () => {
     setGdpr(false);
     localStorage.setItem("acceptCookies", "accepted");
@@ -60,14 +57,13 @@ const MyApp = ({ Component, pageProps }) => {
                     d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                   ></path>
                 </svg>
-                <span>we use cookies for remember your login session.</span>
+                <span>
+                  This website uses cookies to improve your user experience.
+                </span>
               </div>
               <div className="flex-none">
-                <button className="btn btn-sm btn-ghost" onClick={onDeny}>
-                  Deny
-                </button>
                 <button className="btn btn-sm btn-primary" onClick={onAccept}>
-                  Accept
+                  Got It
                 </button>
               </div>
             </div>
