@@ -1,9 +1,9 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const defaultNetwork = "rinkeby"; // or "polygon"
+const defaultNetwork = "polygon"; // or "polygon"
 const TestnetOpenSeaURL = "https://testnets.opensea.io/collection/inst2nft-v2"; // for https://rinkeby.etherscan.io/address/0x8b756d45dd3a77124a0e762c7023e094cc035b40#code
-const MainnetOpenSeaURL = "https://opensea.io/collection/inst2nft";
+const MainnetOpenSeaURL = "https://opensea.io/collection/inst2nft-v2";
 
 const config = {
   defaultNetwork,
@@ -13,7 +13,7 @@ const config = {
       openseaURL: TestnetOpenSeaURL,
     },
     polygon: {
-      contractAddress: "0xD23094F9d4b04A3217Adc38977884d5477d7739D",
+      contractAddress: "0x8B3d0cF3795cdb0e1613F6A8a294a965dA93BEFc",
       openseaURL: MainnetOpenSeaURL,
     },
   },
