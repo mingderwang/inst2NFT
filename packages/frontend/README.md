@@ -20,25 +20,11 @@ index 48eab97..ac54de9 100644
 
 -const defaultNetwork = "rinkeby"; // or "polygon"
 +const defaultNetwork = "polygon"; // or "polygon"
- const TestnetOpenSeaURL = "https://testnets.opensea.io/collection/inst2nft";
- const MainnetOpenSeaURL = "https://opensea.io/collection/inst2nft";
+ const TestnetOpenSeaURL = "https://testnets.opensea.io/collection/inst2nft-v2";
+ const MainnetOpenSeaURL = "https://opensea.io/collection/inst2nft-v2";
 ```
 
-# vercel for rinkeny (testnet)
-```
-{
-  "version": 2,
-  "alias": ["rinkeby.inst.2nft.me"]
-}
-```
 
-# vercel for polygon (mainnet)
-```
-{
-  "version": 2,
-  "alias": ["polygon.inst.2nft.me"]
-}
-```
 > also need to change .env INSTAGRAM_CLIENT_SECRET and INSTAGRAM_CLIENT_ID in packages/frontent
 # for rinkeby
 ```
