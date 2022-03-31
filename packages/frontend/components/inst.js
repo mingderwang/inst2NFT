@@ -104,33 +104,36 @@ export default function Inst({ ...props }) {
         </div>
       )}
       <div className="flex flex-wrap">
-        {inst.map((pin, i) => (
-          <div className="flex flex-nowrap" key={i}>
-            <div className="card w-72 card-bordered card-compact lg:card-normal">
-              <figure>
-                <img src={`${pin.media_url}`}></img>
-              </figure>
-              <div className="card-body">
-                <p>{pin.caption}</p>
-                <p>{pin.username}</p>
-                <p>{pin.timestamp}</p>
-                <div className="justify-end card-actions">
-                  {!showAlert && connect && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        convertInst2NFT(pin);
-                      }}
-                      className="btn btn-secondary"
-                    >
-                      convert to NFT
-                    </button>
-                  )}
+        {Object.keys(inst).map((key, i) => {
+          const pin = inst[key];
+          return (
+            <div className="flex flex-nowrap" key={i}>
+              <div className="card w-72 card-bordered card-compact lg:card-normal">
+                <figure>
+                  <img src={`${pin.media_url}`}></img>
+                </figure>
+                <div className="card-body">
+                  <p>{pin.caption}</p>
+                  <p>{pin.username}</p>
+                  <p>{pin.timestamp}</p>
+                  <div className="justify-end card-actions">
+                    {!showAlert && connect && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          convertInst2NFT(pin);
+                        }}
+                        className="btn btn-secondary"
+                      >
+                        convert to NFT
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
