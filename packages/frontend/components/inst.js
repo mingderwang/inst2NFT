@@ -25,7 +25,7 @@ export default function Inst({ ...props }) {
     initIPFS();
   }, []);
 
-  if (error) return <div>Failed to load</div>;
+  if (error) return <div>Failed to load. (You may sign in again.)</div>;
   if (!data) return <div>Loading...</div>;
   let inst = data;
   if (typeof inst === undefined || inst === undefined) {
@@ -84,7 +84,7 @@ export default function Inst({ ...props }) {
   return (
     <div>
       {showAlert && (
-        <div className="alert alert-info">
+        <div className="alert alert-info shadow-lg">
           <div className="flex-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
