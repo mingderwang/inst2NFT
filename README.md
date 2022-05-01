@@ -1,3 +1,6 @@
+# OBSOLETTED
+move project to https://github.com/MS-hack/inst2NFT
+
 # Inst2NFT Project
 ## demo
 https://inst2nft.vercel.app/
