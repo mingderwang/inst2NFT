@@ -1,4 +1,6 @@
 import NextAuth from "next-auth";
+import FacebookProvider from "next-auth/providers/facebook";
+
 const superagent = require("superagent");
 
 export default NextAuth({
@@ -110,6 +112,11 @@ export default NextAuth({
         redirect_uri: encodeURIComponent(process.env.INSTAGRAM_REDIRECT_URI),
       },
     },
+    FacebookProvider({
+      clientId: process.env.NEXTAUTH_FACEBOOK_ID,
+      clientSecret: process.env.NEXTAUTH_FACEBOOK_SECRET,
+    }),
+
   ],
 
   secret: process.env.SECRET,

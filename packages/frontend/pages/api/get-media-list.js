@@ -21,6 +21,7 @@ export default async function handler(req, res) {
   };
 
   if (raw_token) {
+    console.log('raw_token->:'+raw_token)
     const url =
       "https://graph.instagram.com/me?fields=id, username, account_type, media";
 

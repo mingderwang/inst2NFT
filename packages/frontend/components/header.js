@@ -31,7 +31,7 @@ export default function Header() {
           {!session && (
             <>
               <span className={styles.notSignedInText}>
-                You are not signed in Instagram yet.
+                You are not signed in Instagram or Facebook yet.
               </span>
               <a
                 href={`/api/auth/signin`}
@@ -47,6 +47,7 @@ export default function Header() {
           )}
           {session && (
             <>
+              {console.log(session)}
               {session.user.image && (
                 <span
                   style={{ backgroundImage: `url('${session.user.image}')` }}
