@@ -7,7 +7,7 @@ export default NextAuth({
   providers: [
     {
       id: "instagram",
-      name: "instagram",
+      name: "Instagram",
       type: "oauth",
       version: "2.0",
       token: {
