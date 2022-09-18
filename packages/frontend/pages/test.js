@@ -16,11 +16,10 @@ export default function Profile() {
   
     if (isLoading) return <p>Loading...</p>
     if (!data) return <p>No profile data</p>
-  
     return (
       <div>
-        <h1>{data[0].image_url}</h1>
-        <p>{data[1].image_url}</p>
+        <h1>{data[0].media_url}</h1>
+        <p>{data[1].media_url}</p>
       </div>
     )
   }
