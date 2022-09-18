@@ -31,7 +31,7 @@ export default NextAuth({
       authorization: {
         url: "https://api.instagram.com/oauth/authorize",
         params: {
-          scope: "user_profile",
+          scope: "user_profile", // user_media
         },
       },
       userinfo: {
@@ -95,6 +95,7 @@ export default NextAuth({
             account_type: profile.account_type,
           };
         } else {
+          console.log(profile)
           return {
             id: profile.id,
             name: profile.username,
@@ -115,6 +116,51 @@ export default NextAuth({
     FacebookProvider({
       clientId: process.env.NEXTAUTH_FACEBOOK_ID,
       clientSecret: process.env.NEXTAUTH_FACEBOOK_SECRET,
+      token: {
+        url: "https://graph.facebook.com/oauth/access_token",
+        async request({ client, params, checks, provider }) {
+          const response = await client.oauthCallback(
+            provider.callbackUrl,
+            params,
+            checks,
+            {
+              exchangeBody: {
+                client_id: client.client_id,
+                client_secret: client.client_secret,
+              },
+            }
+          );
+          console.log("response ====", response);
+          return { tokens: response };
+        },
+      },
+      authorization: {
+        url: "https://www.facebook.com/v15.0/dialog/oauth",
+        params: {
+          scope: "email,public_profile,instagram_basic",
+        },
+      },
+      userinfo: {
+        url: "https://graph.facebook.com/me",
+        // https://developers.facebook.com/docs/graph-api/reference/user/#fields
+        params: { fields: "id,name,email,picture" },
+        async request({ tokens, client, provider }) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          return await client.userinfo(tokens.access_token, {
+            // @ts-expect-error
+            params: provider.userinfo?.params,
+          })
+        },
+      },
+      profile(profile) {
+        console.log(profile)
+        return {
+          id: profile.id,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture.data.url,
+        }
+      },
     }),
 
   ],

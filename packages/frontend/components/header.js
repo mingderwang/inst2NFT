@@ -47,7 +47,6 @@ export default function Header() {
           )}
           {session && (
             <>
-              {console.log(session)}
               {session.user.image && (
                 <span
                   style={{ backgroundImage: `url('${session.user.image}')` }}
