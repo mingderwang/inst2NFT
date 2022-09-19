@@ -3,13 +3,12 @@ import Inst from "../components/inst";
 
 function Index() {
   const { data: session, status } = useSession();
-
   return (
     <>
       {session && (
         <>
           <div>
-            <Inst></Inst>
+            <Inst session={session}></Inst>
           </div>
         </>
       )}

@@ -6,6 +6,13 @@ const superagent = require("superagent");
 export default async function handler(req, res) {
   const raw_token = await getJWTToken.handler(req, res);
 
+  const regex = /^IG/;
+  const isIGToken =regex.test(raw_token);
+
+  if (!isIGToken) {
+    res.status(200).json({ error: "login with Facebook, no data" });
+    res.end()
+  } else {
   const doSomethingAsync = async (item) => {
     return functionThatReturnsAPromise(item);
   };
@@ -21,7 +28,7 @@ export default async function handler(req, res) {
   };
 
   if (raw_token) {
-    console.log('raw_token->:'+raw_token)
+    // console.log('raw_token->:'+raw_token)
     const url =
       "https://graph.instagram.com/me?fields=id, username, account_type, media";
 
@@ -46,4 +53,5 @@ export default async function handler(req, res) {
     res.status(200).json({ error: "no accessToken" });
   }
   res.end(); // remove res.end() in helper
+}
 }

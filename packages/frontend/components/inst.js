@@ -6,10 +6,14 @@ import { connectState } from "../recoil/atoms";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
+const options = {
+ // loadingTimeout: 30000, // take more time before retrying
+}
+
 export default function Inst({ ...props }) {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
-  const { data, error } = useSWR(`/api/get-media-list`, fetcher);
+  const { data, error } = useSWR(`/api/get-media-list${props.session.login_type==="Facebook"?"-fb":""}`, fetcher, options);
   const [connect] = useRecoilState(connectState);
 
   useEffect(() => {
@@ -25,7 +29,7 @@ export default function Inst({ ...props }) {
     initIPFS();
   }, []);
 
-  if (error) return <div>Failed to load. (You may sign in again.)</div>;
+  if (error) return <div>Failed to load. (Just wait for more seconds or sign in again later.)</div>;
   if (!data) return <div>Loading...</div>;
   let inst = data;
   if (typeof inst === undefined || inst === undefined) {

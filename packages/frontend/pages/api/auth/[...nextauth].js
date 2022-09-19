@@ -95,7 +95,7 @@ export default NextAuth({
             account_type: profile.account_type,
           };
         } else {
-          console.log(profile)
+          //console.log(profile)
           return {
             id: profile.id,
             name: profile.username,
@@ -130,7 +130,7 @@ export default NextAuth({
               },
             }
           );
-          console.log("response ====", response);
+          //console.log("response ====", response);
           return { tokens: response };
         },
       },
@@ -153,7 +153,7 @@ export default NextAuth({
         },
       },
       profile(profile) {
-        console.log(profile)
+        // console.log(profile)
         return {
           id: profile.id,
           name: profile.name,
@@ -190,6 +190,13 @@ export default NextAuth({
       return token;
     },
     session: async ({ session, token }) => {
+      const regex = /^IG/;
+      const isIGToken =regex.test(token.accessToken);
+      if (isIGToken) {
+        session.login_type = 'Instagram'
+      } else {
+        session.login_type = 'Facebook' 
+      }
       if (session && token?.profile) {
         session.profile = token.profile;
       }
@@ -197,10 +204,9 @@ export default NextAuth({
       if (!session?.user || !token?.account) {
         return session;
       }
-
+      console.log('token', token)
       session.user.id = token.account.id;
       session.accessToken = token.account.accessToken;
-
       return session;
     },
   },
