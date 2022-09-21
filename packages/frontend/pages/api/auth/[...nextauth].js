@@ -137,7 +137,7 @@ export default NextAuth({
       authorization: {
         url: "https://www.facebook.com/v15.0/dialog/oauth",
         params: {
-          scope: "email,public_profile,instagram_basic",
+          scope: "email,public_profile",
         },
       },
       userinfo: {

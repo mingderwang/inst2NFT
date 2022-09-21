@@ -41,3 +41,4 @@ yarn-error.log*
 # nft.storage
 .secret.json
 .vercel
+vercel.json
