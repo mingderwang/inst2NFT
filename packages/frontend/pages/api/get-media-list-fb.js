@@ -77,11 +77,11 @@ export default async function handler(req, res) {
       const result = await getData();
       console.log('getdata->',result)
       const withIGAccountList = result.filter(e =>{
-        console.log(e)
-        return e?.instagram_accounts !== undefined 
+        console.log('checking>>', e)
+        return e.instagram_accounts !== undefined 
       })
-      console.log('withIGAccountList-> ',withIGAccountList[0]?.instagram_accounts[0])
-      const ig_user_id = withIGAccountList[0]?.instagram_accounts[0]?.data.id
+      console.log('withIGAccountList-> ',withIGAccountList)
+      const ig_user_id = withIGAccountList[0].instagram_accounts.data[0].id
       console.log('ig_user_id-> ',ig_user_id)
       const getMedia = await superagent.get(`https://graph.facebook.com/v15.0/${ig_user_id}/media`).query({
         access_token: raw_token,
@@ -89,6 +89,7 @@ export default async function handler(req, res) {
 
       const media = JSON.parse(getMedia.text);
       const ids = media.data.map((e)=>e.id)
+      console.log('ids->',ids)
       const getData2 = async () => {
         return Promise.all(ids.map((item) => doSomethingAsync2(item)));
       };

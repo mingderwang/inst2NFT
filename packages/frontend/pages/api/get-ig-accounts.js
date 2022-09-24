@@ -40,6 +40,7 @@ export default async function handler(req, res) {
 
     const getPages = await superagent.get(url2).query({
       access_token: raw_token,
+      limit: 3
     });
     const pages = JSON.parse(getPages.text);
     console.log('Pages->', getPages.text)
