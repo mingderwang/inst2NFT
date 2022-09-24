@@ -30,7 +30,7 @@ export default async function handler(req, res) {
     const url = `https://graph.facebook.com/v15.0/${pageId}`; 
     const res = await superagent.get(url).query(
       { access_token: token,
-        fields: "name,access_token,instagram_accounts",
+        fields: "instagram_business_account,name",
       });
     return Promise.resolve(await JSON.parse(res.text));
   };
@@ -45,7 +45,6 @@ export default async function handler(req, res) {
     return Promise.resolve(await JSON.parse(res.text));
   }
 
-    console.log("token ->>>> ", raw_token);
   if (raw_token) {
     console.log('facebook token->:'+raw_token)
     const url =
@@ -55,8 +54,6 @@ export default async function handler(req, res) {
 
     const getUser = await superagent.get(url).query({
       access_token: raw_token,
-      limit: 3,
-      fields: "name "
     });
     const fbUser = JSON.parse(getUser.text);
     console.log('FB_id->', fbUser)
@@ -76,12 +73,18 @@ export default async function handler(req, res) {
       };
       const result = await getData();
       console.log('getdata->',result)
-      const withIGAccountList = result.filter(e =>{
-        console.log('checking>>', e)
-        return e.instagram_accounts !== undefined 
+      const withIGAccountList = result
+      .filter(e => e.instagram_business_account)
+      .map((e) => {
+        return e.instagram_business_account.id
       })
+
+      
       console.log('withIGAccountList-> ',withIGAccountList)
-      const ig_user_id = withIGAccountList[0].instagram_accounts.data[0].id
+      if (withIGAccountList.length === 0) {
+        res.status(200).json({ error: "You have no instagram profesional account connected to facebook pages." }); 
+      } else {
+      const ig_user_id = withIGAccountList[0]
       console.log('ig_user_id-> ',ig_user_id)
       const getMedia = await superagent.get(`https://graph.facebook.com/v15.0/${ig_user_id}/media`).query({
         access_token: raw_token,
@@ -96,9 +99,10 @@ export default async function handler(req, res) {
 
       const result2 = await getData2()
       res.status(200).json(result2);
+    }
     } else {
       res.status(200).json({ error: "no media data" });
-    }
+    } 
   } else {
     res.status(200).json({ error: "no accessToken" });
   }
