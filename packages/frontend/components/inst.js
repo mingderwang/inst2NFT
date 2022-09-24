@@ -29,7 +29,7 @@ export default function Inst({ ...props }) {
     initIPFS();
   }, []);
 
-  if (error) return <div>Failed to load. (Just wait for more seconds or sign in again later.)</div>;
+  if (error) return <div>Failed to load. (Just wait for a moment or sign in again later.)</div>;
   if (!data) return <div>Loading...</div>;
   let inst = data;
   if (typeof inst === undefined || inst === undefined) {

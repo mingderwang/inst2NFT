@@ -25,11 +25,12 @@ export default async function handler(req, res) {
     //a function that returns a promise
     // show following on server side.
     const pageId = item.id
-    //console.log("token", raw_token);
+    const token = item.access_token
+    console.log('item-> ', item) 
     const url = `https://graph.facebook.com/v15.0/${pageId}`; 
     const res = await superagent.get(url).query(
-      { access_token: raw_token,
-        fields: "instagram_business_account,name"
+      { access_token: token,
+        fields: "name,access_token,instagram_accounts",
       });
     return Promise.resolve(await JSON.parse(res.text));
   };
@@ -44,34 +45,44 @@ export default async function handler(req, res) {
     return Promise.resolve(await JSON.parse(res.text));
   }
 
+    console.log("token ->>>> ", raw_token);
   if (raw_token) {
-    // console.log('facebook token->:'+raw_token)
+    console.log('facebook token->:'+raw_token)
     const url =
       "https://graph.facebook.com/v15.0/me";
     const url2 =
-      "https://graph.facebook.com/v15.0/me/accounts?fields=name";
+      "https://graph.facebook.com/v15.0/me/accounts"; // limit=3 is a workaround. refer to https://developers.facebook.com/community/threads/1086307855077571/
 
     const getUser = await superagent.get(url).query({
       access_token: raw_token,
+      limit: 3,
+      fields: "name "
     });
     const fbUser = JSON.parse(getUser.text);
-    // console.log('FB_id->', fbUser.id)
+    console.log('FB_id->', fbUser)
 
     const getPages = await superagent.get(url2).query({
       access_token: raw_token,
+      limit: 3,
+      fields: "name,access_token"
     });
     const pages = JSON.parse(getPages.text);
-    // console.log('Pages->', getPages.text)
-
+    console.log('Pages->', getPages.text)
+  
     if (pages?.data) {
       const list = pages.data;
       const getData = async () => {
         return Promise.all(list.map((item) => doSomethingAsync(item)));
       };
       const result = await getData();
-      const withIGAccountList = result.filter(e => e.instagram_business_account)
-      const ig_user_id = withIGAccountList[0].instagram_business_account.id
-
+      console.log('getdata->',result)
+      const withIGAccountList = result.filter(e =>{
+        console.log(e)
+        return e?.instagram_accounts !== undefined 
+      })
+      console.log('withIGAccountList-> ',withIGAccountList[0]?.instagram_accounts[0])
+      const ig_user_id = withIGAccountList[0]?.instagram_accounts[0]?.data.id
+      console.log('ig_user_id-> ',ig_user_id)
       const getMedia = await superagent.get(`https://graph.facebook.com/v15.0/${ig_user_id}/media`).query({
         access_token: raw_token,
       });
