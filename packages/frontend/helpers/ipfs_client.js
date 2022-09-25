@@ -39,15 +39,15 @@ const create = async (JsonItem, callback) => {
 
 const createFromURL = async (imageURL, callback) => {
   callback("4"); // start create image
-  //console.log("4---", imageURL);
+  console.log("4---", imageURL);
   const node = await init();
   const request = new Request(imageURL);
-  //console.log("request", request);
+  console.log("request", request);
   const res = await fetch(request);
   const blob = await res.blob();
   const { cid } = await node.add(blob);
   const ipfsImageURL = "https://ipfs.io/ipfs/" + cid.toString();
-  //console.log("ipfsImageURL", ipfsImageURL);
+  console.log("ipfsImageURL", ipfsImageURL);
   return { ipfs_image_url: ipfsImageURL };
 };
 
