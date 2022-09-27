@@ -17,12 +17,12 @@ export default async function handler(req, res) {
     //console.log("token", raw_token);
     const url = "https://graph.facebook.com/v15.0/me"; 
     const res = await superagent.get(url).query({ access_token: raw_token });
-    console.log('functionThatReturnsAPromise' + res.statusCode)
+    //console.log('functionThatReturnsAPromise' + res.statusCode)
     return Promise.resolve(await JSON.parse(res.text));
   };
 
   if (raw_token) {
-    console.log('facebook token->:'+raw_token)
+    //console.log('facebook token->:'+raw_token)
     const url =
       "https://graph.facebook.com/v15.0/me";
 
@@ -30,7 +30,7 @@ export default async function handler(req, res) {
       access_token: raw_token,
     });
     const user = JSON.parse(x.text);
-    console.log('FB_id->', user.id)
+    //console.log('FB_id->', user.id)
     res.status(200).json(user)
   } else {
     res.status(500).json({ error: "no accessToken" });

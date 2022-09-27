@@ -10,6 +10,6 @@ export function getChainById(id) {
     default:
       networkName = "";
   }
-  //  console.log("networkName", networkName);
+  //console.log("networkName", networkName);
   return networkName;
 }

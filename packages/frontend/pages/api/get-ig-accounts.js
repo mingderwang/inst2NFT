@@ -13,37 +13,35 @@ export default async function handler(req, res) {
   const functionThatReturnsAPromise = async (item) => {
     //a function that returns a promise
     // show following on server side.
-    const pageId = item.id
-    console.log("item id:", pageId);
+    const pageId = item.id;
+    //console.log("item id:", pageId);
     //console.log("token", raw_token);
-    const url = `https://graph.facebook.com/v15.0/${pageId}`; 
-    const res = await superagent.get(url).query(
-      { access_token: raw_token,
-        fields: "instagram_business_account,name"
-      });
-    console.log('functionThatReturnsAPromise: ' + res.statusCode)
+    const url = `https://graph.facebook.com/v15.0/${pageId}`;
+    const res = await superagent.get(url).query({
+      access_token: raw_token,
+      fields: "instagram_business_account,name",
+    });
+    //console.log('functionThatReturnsAPromise: ' + res.statusCode)
     return Promise.resolve(await JSON.parse(res.text));
   };
 
   if (raw_token) {
-    console.log('facebook token->:'+raw_token)
-    const url =
-      "https://graph.facebook.com/v15.0/me";
-    const url2 =
-      "https://graph.facebook.com/v15.0/me/accounts?fields=name";
+    //console.log('facebook token->:'+raw_token)
+    const url = "https://graph.facebook.com/v15.0/me";
+    const url2 = "https://graph.facebook.com/v15.0/me/accounts?fields=name";
 
     const getUser = await superagent.get(url).query({
       access_token: raw_token,
     });
     const fbUser = JSON.parse(getUser.text);
-    console.log('FB_id->', fbUser.id)
+    //console.log('FB_id->', fbUser.id)
 
     const getPages = await superagent.get(url2).query({
       access_token: raw_token,
-      limit: 3
+      limit: 3,
     });
     const pages = JSON.parse(getPages.text);
-    console.log('Pages->', getPages.text)
+    //console.log('Pages->', getPages.text)
 
     if (pages?.data) {
       const list = pages.data;
@@ -52,10 +50,10 @@ export default async function handler(req, res) {
       };
       const result = await getData();
       const withIGAccountList = result
-      .filter(e => e.instagram_business_account)
-      .map((e) => {
-        return e.instagram_business_account.id
-      })
+        .filter((e) => e.instagram_business_account)
+        .map((e) => {
+          return e.instagram_business_account.id;
+        });
 
       res.status(200).json(withIGAccountList);
     } else {

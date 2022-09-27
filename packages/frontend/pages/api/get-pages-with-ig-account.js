@@ -14,19 +14,19 @@ export default async function handler(req, res) {
     //a function that returns a promise
     // show following on server side.
     const pageId = item.id
-    console.log("item id:", pageId);
+    //console.log("item id:", pageId);
     //console.log("token", raw_token);
     const url = `https://graph.facebook.com/v15.0/${pageId}`; 
     const res = await superagent.get(url).query(
       { access_token: raw_token,
         fields: "instagram_business_account,name"
       });
-    console.log('functionThatReturnsAPromise: ' + res.statusCode)
+    //console.log('functionThatReturnsAPromise: ' + res.statusCode)
     return Promise.resolve(await JSON.parse(res.text));
   };
 
   if (raw_token) {
-    console.log('facebook token->:'+raw_token)
+    //console.log('facebook token->:'+raw_token)
     const url =
       "https://graph.facebook.com/v15.0/me";
     const url2 =
@@ -36,13 +36,13 @@ export default async function handler(req, res) {
       access_token: raw_token,
     });
     const fbUser = JSON.parse(getUser.text);
-    console.log('FB_id->', fbUser.id)
+    //console.log('FB_id->', fbUser.id)
 
     const getPages = await superagent.get(url2).query({
       access_token: raw_token,
     });
     const pages = JSON.parse(getPages.text);
-    console.log('Pages->', getPages.text)
+    //console.log('Pages->', getPages.text)
 
     if (pages?.data) {
       const list = pages.data;

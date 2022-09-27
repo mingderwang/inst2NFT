@@ -47,7 +47,7 @@ export default async function handler(req, res) {
   };
 
   if (raw_token) {
-    console.log('facebook token->:'+raw_token)
+    //console.log('facebook token->:'+raw_token)
     const url =
       "https://graph.facebook.com/v15.0/me";
     const url2 =
@@ -57,7 +57,7 @@ export default async function handler(req, res) {
       access_token: raw_token,
     });
     const fbUser = JSON.parse(getUser.text);
-    console.log('FB_id->', fbUser.id)
+    //console.log('FB_id->', fbUser.id)
 
     const getPages = await superagent.get(url2).query({
       access_token: raw_token,

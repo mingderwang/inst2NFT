@@ -7,13 +7,19 @@ import { connectState } from "../recoil/atoms";
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const options = {
- // loadingTimeout: 30000, // take more time before retrying
-}
+  // loadingTimeout: 30000, // take more time before retrying
+};
 
 export default function Inst({ ...props }) {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
-  const { data, error } = useSWR(`/api/get-media-list${props.session.login_type==="Facebook"?"-fb":""}`, fetcher, options);
+  const { data, error } = useSWR(
+    `/api/get-media-list${
+      props.session.login_type === "Facebook" ? "-fb" : ""
+    }`,
+    fetcher,
+    options
+  );
   const [connect] = useRecoilState(connectState);
 
   useEffect(() => {
@@ -29,7 +35,12 @@ export default function Inst({ ...props }) {
     initIPFS();
   }, []);
 
-  if (error) return <div>Failed to load. (Just wait for a moment or sign in again later.)</div>;
+  if (error)
+    return (
+      <div>
+        Failed to load. (Just wait for a moment or sign in again later.)
+      </div>
+    );
   if (!data) return <div>Loading...</div>;
   let inst = data;
   if (typeof inst === undefined || inst === undefined) {
@@ -66,12 +77,12 @@ export default function Inst({ ...props }) {
         }, 30000);
         break;
       default:
-        console.log(`callback case error`);
+        console.error(`callback case error`);
     }
   }
 
   async function createInst(pin) {
-    console.log('pin.media_url,', pin.media_url)
+    console.log("pin.media_url,", pin.media_url);
     const { ipfs_image_url } = await ipfs_client.createFromURL(
       pin.media_url,
       callback

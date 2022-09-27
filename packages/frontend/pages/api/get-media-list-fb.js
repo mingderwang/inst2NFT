@@ -7,105 +7,107 @@ export default async function handler(req, res) {
   const raw_token = await getJWTToken.handler(req, res);
 
   const regex = /^IG/;
-  const isIGToken =regex.test(raw_token);
+  const isIGToken = regex.test(raw_token);
 
   if (isIGToken) {
     res.status(200).json({ error: "login with Instagram, no data" });
-    res.end()
+    res.end();
   } else {
-  const doSomethingAsync = async (item) => {
-    return functionThatReturnsAPromise(item);
-  };
+    const doSomethingAsync = async (item) => {
+      return functionThatReturnsAPromise(item);
+    };
 
-  const doSomethingAsync2 = async (item) => {
-    return functionThatReturnsAPromise2(item);
-  };
+    const doSomethingAsync2 = async (item) => {
+      return functionThatReturnsAPromise2(item);
+    };
 
-  const functionThatReturnsAPromise = async (item) => {
-    //a function that returns a promise
-    // show following on server side.
-    const pageId = item.id
-    const token = item.access_token
-    console.log('item-> ', item) 
-    const url = `https://graph.facebook.com/v15.0/${pageId}`; 
-    const res = await superagent.get(url).query(
-      { access_token: token,
+    const functionThatReturnsAPromise = async (item) => {
+      //a function that returns a promise
+      // show following on server side.
+      const pageId = item.id;
+      const token = item.access_token;
+      //console.log('item-> ', item)
+      const url = `https://graph.facebook.com/v15.0/${pageId}`;
+      const res = await superagent.get(url).query({
+        access_token: token,
         fields: "instagram_business_account,name",
       });
-    return Promise.resolve(await JSON.parse(res.text));
-  };
+      return Promise.resolve(await JSON.parse(res.text));
+    };
 
-  const functionThatReturnsAPromise2 = async (mediaId) => {
-    const url = `https://graph.facebook.com/v15.0/${mediaId}`; 
-    const res = await superagent.get(url).query(
-      { access_token: raw_token,
-        fields: "username,id,ig_id,media_url,timestamp,caption"
+    const functionThatReturnsAPromise2 = async (mediaId) => {
+      const url = `https://graph.facebook.com/v15.0/${mediaId}`;
+      const res = await superagent.get(url).query({
+        access_token: raw_token,
+        fields: "username,id,ig_id,media_url,timestamp,caption",
       });
- 
-    return Promise.resolve(await JSON.parse(res.text));
-  }
 
-  if (raw_token) {
-    console.log('facebook token->:'+raw_token)
-    const url =
-      "https://graph.facebook.com/v15.0/me";
-    const url2 =
-      "https://graph.facebook.com/v15.0/me/accounts"; // limit=3 is a workaround. refer to https://developers.facebook.com/community/threads/1086307855077571/
+      return Promise.resolve(await JSON.parse(res.text));
+    };
 
-    const getUser = await superagent.get(url).query({
-      access_token: raw_token,
-    });
-    const fbUser = JSON.parse(getUser.text);
-    console.log('FB_id->', fbUser)
+    if (raw_token) {
+      //console.log('facebook token->:'+raw_token)
+      const url = "https://graph.facebook.com/v15.0/me";
+      const url2 = "https://graph.facebook.com/v15.0/me/accounts"; // limit=3 is a workaround. refer to https://developers.facebook.com/community/threads/1086307855077571/
 
-    const getPages = await superagent.get(url2).query({
-      access_token: raw_token,
-      limit: 3,
-      fields: "name,access_token"
-    });
-    const pages = JSON.parse(getPages.text);
-    console.log('Pages->', getPages.text)
-  
-    if (pages?.data) {
-      const list = pages.data;
-      const getData = async () => {
-        return Promise.all(list.map((item) => doSomethingAsync(item)));
-      };
-      const result = await getData();
-      console.log('getdata->',result)
-      const withIGAccountList = result
-      .filter(e => e.instagram_business_account)
-      .map((e) => {
-        return e.instagram_business_account.id
-      })
-
-      
-      console.log('withIGAccountList-> ',withIGAccountList)
-      if (withIGAccountList.length === 0) {
-        res.status(200).json({ error: "You have no instagram profesional account connected to facebook pages." }); 
-      } else {
-      const ig_user_id = withIGAccountList[0]
-      console.log('ig_user_id-> ',ig_user_id)
-      const getMedia = await superagent.get(`https://graph.facebook.com/v15.0/${ig_user_id}/media`).query({
+      const getUser = await superagent.get(url).query({
         access_token: raw_token,
       });
+      const fbUser = JSON.parse(getUser.text);
+      //console.log('FB_id->', fbUser)
 
-      const media = JSON.parse(getMedia.text);
-      const ids = media.data.map((e)=>e.id)
-      console.log('ids->',ids)
-      const getData2 = async () => {
-        return Promise.all(ids.map((item) => doSomethingAsync2(item)));
-      };
+      const getPages = await superagent.get(url2).query({
+        access_token: raw_token,
+        limit: 3,
+        fields: "name,access_token",
+      });
+      const pages = JSON.parse(getPages.text);
+      //console.log('Pages->', getPages.text)
 
-      const result2 = await getData2()
-      res.status(200).json(result2);
-    }
+      if (pages?.data) {
+        const list = pages.data;
+        const getData = async () => {
+          return Promise.all(list.map((item) => doSomethingAsync(item)));
+        };
+        const result = await getData();
+        //console.log('getdata->',result)
+        const withIGAccountList = result
+          .filter((e) => e.instagram_business_account)
+          .map((e) => {
+            return e.instagram_business_account.id;
+          });
+
+        //console.log('withIGAccountList-> ',withIGAccountList)
+        if (withIGAccountList.length === 0) {
+          res.status(200).json({
+            error:
+              "You have no instagram profesional account connected to facebook pages.",
+          });
+        } else {
+          const ig_user_id = withIGAccountList[0];
+          //console.log('ig_user_id-> ',ig_user_id)
+          const getMedia = await superagent
+            .get(`https://graph.facebook.com/v15.0/${ig_user_id}/media`)
+            .query({
+              access_token: raw_token,
+            });
+
+          const media = JSON.parse(getMedia.text);
+          const ids = media.data.map((e) => e.id);
+          //console.log('ids->',ids)
+          const getData2 = async () => {
+            return Promise.all(ids.map((item) => doSomethingAsync2(item)));
+          };
+
+          const result2 = await getData2();
+          res.status(200).json(result2);
+        }
+      } else {
+        res.status(200).json({ error: "no media data" });
+      }
     } else {
-      res.status(200).json({ error: "no media data" });
-    } 
-  } else {
-    res.status(200).json({ error: "no accessToken" });
+      res.status(200).json({ error: "no accessToken" });
+    }
+    res.end(); // remove res.end() in helper
   }
-  res.end(); // remove res.end() in helper
-}
 }

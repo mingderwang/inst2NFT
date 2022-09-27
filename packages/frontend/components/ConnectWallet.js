@@ -156,7 +156,7 @@ function ConnectWallet() {
       }
       setAndCheck3(currentNetwork, network.chainId); // include setConnect2(match)
     } catch (error) {
-      console.log("web3Modal error", error);
+      console.error("web3Modal error", error);
     }
   }, []);
 

@@ -149,20 +149,19 @@ export default NextAuth({
           return await client.userinfo(tokens.access_token, {
             // @ts-expect-error
             params: provider.userinfo?.params,
-          })
+          });
         },
       },
       profile(profile) {
-        // console.log(profile)
+        //console.log(profile)
         return {
           id: profile.id,
           name: profile.name,
           email: profile.email,
           image: profile.picture.data.url,
-        }
+        };
       },
     }),
-
   ],
 
   secret: process.env.SECRET,
@@ -179,7 +178,9 @@ export default NextAuth({
     // You can define your own encode/decode functions for signing and encryption
   },
 
-  pages: {},
+  pages: {
+    signIn: "/signin",
+  },
 
   callbacks: {
     async jwt({ token, account }) {
@@ -191,20 +192,20 @@ export default NextAuth({
     },
     session: async ({ session, token }) => {
       const regex = /^IG/;
-      const isIGToken =regex.test(token.accessToken);
+      const isIGToken = regex.test(token.accessToken);
       if (isIGToken) {
-        session.login_type = 'Instagram'
+        session.login_type = "Instagram";
       } else {
-        session.login_type = 'Facebook' 
+        session.login_type = "Facebook";
       }
       if (session && token?.profile) {
         session.profile = token.profile;
       }
-      //  console.log("session", session);
+      //console.log("session", session);
       if (!session?.user || !token?.account) {
         return session;
       }
-      console.log('token', token)
+      //console.log('token', token)
       session.user.id = token.account.id;
       session.accessToken = token.account.accessToken;
       return session;
