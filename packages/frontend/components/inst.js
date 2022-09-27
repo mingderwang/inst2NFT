@@ -82,7 +82,7 @@ export default function Inst({ ...props }) {
   }
 
   async function createInst(pin) {
-    console.log("pin.media_url,", pin.media_url);
+    //console.log("pin.media_url,", pin.media_url);
     const { ipfs_image_url } = await ipfs_client.createFromURL(
       pin.media_url,
       callback
