@@ -1,6 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .btn {
+    text-transform: none;
+  }
+}
+
 body {
   font-family: -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans,
     sans-serif, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif,

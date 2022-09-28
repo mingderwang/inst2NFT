@@ -1,17 +1,31 @@
 import { getProviders, getSession, signIn } from "next-auth/react";
-import styles from "./styles/Signin.module.css";
 
 export default function SignIn({ providers }) {
   return (
-    <div className={styles.container}>
-      {Object.values(providers).map((provider) => (
-        <div className={styles.container} key={provider.name}>
-          <button className={styles.button} onClick={() => signIn(provider.id)}>
-            Sign in with {provider.name}
+    <>
+      <section className="mt-8 container mx-auto flex items-center justify-around">
+        {Object.values(providers).map((provider) => (
+          <button
+            className={
+              provider.name === "Instagram"
+                ? "btn btn-secondary btn-lg"
+                : "btn btn-primary btn-lg"
+            }
+            onClick={() => signIn(provider.id)}
+          >
+            <img
+              className="inline-block w-12 h-12 mr-2 stroke-current"
+              src={
+                provider.name === "Instagram"
+                  ? "/Instagram_Glyph_Gradient_RGB.svg"
+                  : "/FB-RGB-Wht.svg"
+              }
+            ></img>
+            Continue with {provider.name}
           </button>
-        </div>
-      ))}
-    </div>
+        ))}
+      </section>
+    </>
   );
 }
 
