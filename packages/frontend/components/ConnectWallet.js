@@ -213,17 +213,20 @@ function ConnectWallet() {
           </button>
         )}
       </div>
-      <div className="flex-initial w-64">
-        {match && web3Provider && <p>✅ run on {onNetwork} network 🐯 </p>}
+      <div className="flex-initial w-100">
+        {match && web3Provider && <p>✅ running on {onNetwork} network </p>}
         {!match && (
           <div>
-            <p> {`❌ (Please use ${defaultNetwork} network.)`}</p>
+            <p>
+              {" "}
+              {`❌ (Connect and switch your wallet to ${defaultNetwork} network.)`}
+            </p>
           </div>
         )}
         {match && address && shortAddress && (
           <div className="grid">
             <div>
-              <p>{shortAddress(address, 6)}</p>
+              <p>with account: {shortAddress(address, 6)}</p>
             </div>
           </div>
         )}

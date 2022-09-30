@@ -31,7 +31,7 @@ export default function Header() {
           {!session && (
             <>
               <span className={styles.notSignedInText}>
-                You are not signed in Instagram or Facebook yet.
+                To convert your Instagram posts into NFTs, please sign in.
               </span>
               <a
                 href={`/api/auth/signin`}
