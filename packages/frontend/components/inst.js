@@ -1,13 +1,26 @@
 import useSWR from "swr";
 import { useState, useEffect } from "react";
-import { nft_storage } from "../helpers";
+import { ipfs_client } from "../helpers";
+import { useRecoilState } from "recoil";
+import { connectState } from "../recoil/atoms";
+
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
+const options = {
+  // loadingTimeout: 30000, // take more time before retrying
+};
+
 export default function Inst({ ...props }) {
-  const nft_storage_key = props.nft_storage_key;
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
-  const { data, error } = useSWR(`/api/auth/session`, fetcher);
+  const { data, error } = useSWR(
+    `/api/get-media-list${
+      props.session.login_type === "Facebook" ? "-fb" : ""
+    }`,
+    fetcher,
+    options
+  );
+  const [connect] = useRecoilState(connectState);
 
   useEffect(() => {
     if (typeof inst !== "undefined" && inst.length === 0) {
@@ -15,15 +28,31 @@ export default function Inst({ ...props }) {
     }
   }, [data]);
 
-  if (error) return <div>Failed to load</div>;
+  useEffect(() => {
+    const initIPFS = async () => {
+      await ipfs_client.init();
+    };
+    initIPFS();
+  }, []);
+
+  if (error)
+    return (
+      <div>
+        Failed to load. (Just wait for a moment or sign in again later.)
+      </div>
+    );
   if (!data) return <div>Loading...</div>;
-  let inst = data.profile?.mediaUrlArray;
+  let inst = data;
   if (typeof inst === undefined || inst === undefined) {
     inst = [];
   }
   function callback(data) {
     //console.log("show Alert", data);
     switch (data) {
+      case "4":
+        setAlertMessage("Copy media to IPFS.");
+        setShowAlert(true);
+        break;
       case "3":
         setAlertMessage("No media posted in your Instagram account.");
         setShowAlert(true);
@@ -48,18 +77,19 @@ export default function Inst({ ...props }) {
         }, 30000);
         break;
       default:
-        console.log(`callback case error`);
+        console.error(`callback case error`);
     }
   }
 
-  function jsony(a) {
-    return Object.entries(a)
-      .map(([k, v]) => `${k}: ${v}`) // stringfy an json object a
-      .join(`,\n `);
-  }
-
   async function createInst(pin) {
-    const result = await nft_storage.create(pin, callback, nft_storage_key);
+    //console.log("pin.media_url,", pin.media_url);
+    const { ipfs_image_url } = await ipfs_client.createFromURL(
+      pin.media_url,
+      callback
+    );
+    //console.log("ipfs_image_url", ipfs_image_url);
+    const newPin = { ...pin, media_url: ipfs_image_url }; // newPin with ipfs image url
+    const result = await ipfs_client.create(newPin, callback);
     return result;
   }
 
@@ -70,7 +100,7 @@ export default function Inst({ ...props }) {
   return (
     <div>
       {showAlert && (
-        <div className="alert alert-info">
+        <div className="alert alert-info shadow-lg">
           <div className="flex-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -90,33 +120,36 @@ export default function Inst({ ...props }) {
         </div>
       )}
       <div className="flex flex-wrap">
-        {inst.map((pin, i) => (
-          <div className="flex flex-nowrap" key={i}>
-            <div className="card w-72 card-bordered card-compact lg:card-normal">
-              <figure>
-                <img src={`${pin.media_url}`}></img>
-              </figure>
-              <div className="card-body">
-                <p>{pin.caption}</p>
-                <p>{pin.username}</p>
-                <p>{pin.timestamp}</p>
-                <div className="justify-end card-actions">
-                  {!showAlert && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        convertInst2NFT(pin);
-                      }}
-                      className="btn btn-secondary"
-                    >
-                      convert to NFT
-                    </button>
-                  )}
+        {Object.keys(inst).map((key, i) => {
+          const pin = inst[key];
+          return (
+            <div className="flex flex-nowrap" key={i}>
+              <div className="card w-72 card-bordered card-compact lg:card-normal">
+                <figure>
+                  <img src={`${pin.media_url}`}></img>
+                </figure>
+                <div className="card-body">
+                  <p>{pin.caption}</p>
+                  <p>{pin.username}</p>
+                  <p>{pin.timestamp}</p>
+                  <div className="justify-end card-actions">
+                    {!showAlert && connect && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          convertInst2NFT(pin);
+                        }}
+                        className="btn btn-secondary"
+                      >
+                        convert to NFT
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

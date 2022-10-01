@@ -1,3 +1,7 @@
+#
+.env.local.rinkeby
+.secret.json.rinkeby
+
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -29,10 +33,12 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+.env.production
 .env
 
 # vercel
-.vercel
 
 # nft.storage
 .secret.json
+.vercel
+vercel.json

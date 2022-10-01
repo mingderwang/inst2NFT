@@ -1,45 +1,46 @@
-const pack = require("../package.json")
-export default function Service() {
+export default function DeleteUserData() {
   return (
     <section className="relative py-16 bg-white min-w-screen animation-fade animation-delay">
       <div className="container px-0 px-8 mx-auto sm:px-12 xl:px-5">
         <p className="text-xs font-bold text-left text-pink-500 uppercase sm:mx-6 sm:text-center sm:text-normal sm:font-bold">
-          To use on your own risk and responsibility.
+          We don't collect your data!
         </p>
         <h3 className="mt-1 text-2xl font-bold text-left text-gray-800 sm:mx-6 sm:text-3xl md:text-4xl lg:text-5xl sm:text-center sm:mx-0">
-          Terms of Service
+          User Data Policy
         </h3>
         <div className="w-full px-6 py-6 mx-auto mt-10 bg-white border border-gray-200 rounded-lg sm:px-8 md:px-12 sm:py-8 sm:shadow lg:w-5/6 xl:w-2/3">
           <h3 className="text-lg font-bold text-purple-500 sm:text-xl md:text-2xl">
-            To know what you are doing!
+            How to delete your data?
           </h3>
           <p className="mt-2 text-base text-gray-600 sm:text-lg md:text-normal">
-            NFT is a very new term in the digital world. And most of the people
-            don't really know what the NFT really is. We just provide a tool for
-            you to create a NFT (token) with a metadata to link to your (own)
-            media or any other digital contents. That's it. When you own the
-            token, you are the owner of the token. It doesn't really mean you
-            are the owner or creator of the original contents. Everyone should
-            be ware of the copyright issues and the NFT legally means. This tool
-            or service is just help you to create a NFT from your posted media
-            on Instagram or Facebook.
+            You have some cookies for login Instagram are located on your
+            browser. We don't have any data from your local side and not collect
+            any of your personal information on the server side.
           </p>
         </div>
         <div className="w-full px-6 py-6 mx-auto mt-10 bg-white border border-gray-200 rounded-lg sm:px-8 md:px-12 sm:py-8 sm:shadow lg:w-5/6 xl:w-2/3">
           <h3 className="text-lg font-bold text-purple-500 sm:text-xl md:text-2xl">
-            What you can do with these NFTs?
+            How to remove your posted media from NFTs?
           </h3>
           <p className="mt-2 text-base text-gray-600 sm:text-lg md:text-normal">
-            After you convert your media to NFTs, you can own and keep your
-            ownership of NFTs, or trading them on NFT marketplaces like OpenSea.
-            Or even simplly transfer them to any other person via any Ethereum
-            compatible wallet, such as Metamask.
+            Sorry, you can't. NFT is a kind of token which registers itself on
+            blockchains. And it stores its metadata on IPFS, which is a
+            permanent storage, no one can mutate it. So, there is no way to
+            remove your post from NFTs.
           </p>
         </div>
         <div className="w-full px-6 py-6 mx-auto mt-10 bg-white border border-gray-200 rounded-lg sm:px-8 md:px-12 sm:py-8 sm:shadow lg:w-5/6 xl:w-2/3">
           <h3 className="text-lg font-bold text-purple-500 sm:text-xl md:text-2xl">
-            Inst2NFT version {pack.version}
+            Who owns the NFT when it had been created?
           </h3>
+          <p className="mt-2 text-base text-gray-600 sm:text-lg md:text-normal">
+            The simple answer is you. The NFT owner is the person who created
+            it. But the media it was linked to may or may not belong to the same
+            person. It depends on who owns the copyrights and/or who creates the
+            original contents. Because you are the owner of these NFT tokens if
+            you convert and mint them. Then, you can trade them on NFT
+            marketplaces or transfer directly to anybody if you want.
+          </p>
         </div>
       </div>
     </section>

@@ -1,8 +1,8 @@
 {
   "private": true,
-  "version": "0.1.0",
+  "version": "2.2.3",
   "scripts": {
-    "dev": "next",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start"
   },
@@ -10,19 +10,24 @@
     "@walletconnect/web3-provider": "^1.7.1",
     "apollo-server-micro": "^3.0.1",
     "axios": "^0.25.0",
+    "cids": "^1.1.9",
+    "cors": "^2.8.5",
     "daisyui": "^1.23.0",
     "dotenv": "^12.0.3",
     "ethers": "^5.5.3",
     "graphql": "^15.5.1",
+    "ipfs-core": "^0.14.1",
     "micro": "^9.3.4",
-    "next": "^12.0.10",
+    "next": "^12.3.1",
     "next-auth": "^4.1.0",
     "nft.storage": "^5.2.0",
+    "node": "^18.9.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "recoil": "^0.5.2",
     "superagent": "^7.1.1",
     "swr": "^0.5.6",
+    "timeout-abort-controller": "^3.0.0",
     "walletlink": "^2.4.7",
     "web3modal": "^1.9.5"
   },
@@ -30,8 +35,5 @@
     "autoprefixer": "^10.4.2",
     "postcss": "^8.4.5",
     "tailwindcss": "^3.0.15"
-  },
-  "engines": {
-    "node": ">= 14.0.0"
   }
 }

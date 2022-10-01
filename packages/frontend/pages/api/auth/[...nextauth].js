@@ -1,11 +1,13 @@
 import NextAuth from "next-auth";
+import FacebookProvider from "next-auth/providers/facebook";
+
 const superagent = require("superagent");
 
 export default NextAuth({
   providers: [
     {
       id: "instagram",
-      name: "instagram",
+      name: "Instagram",
       type: "oauth",
       version: "2.0",
       token: {
@@ -29,11 +31,11 @@ export default NextAuth({
       authorization: {
         url: "https://api.instagram.com/oauth/authorize",
         params: {
-          scope: "user_profile",
+          scope: "user_profile", // user_media
         },
       },
       userinfo: {
-        url: "https://graph.instagram.com/me?fields=id, username, account_type, media_count, media",
+        url: "https://graph.instagram.com/me?fields=id, username, account_type, media",
         async request({ client, tokens }) {
           // Get base profile
           //console.log("userinfo.client", client);
@@ -91,16 +93,15 @@ export default NextAuth({
             email: profile.email,
             image: profile.image,
             account_type: profile.account_type,
-            media_count: profile.media_count,
           };
         } else {
+          //console.log(profile)
           return {
             id: profile.id,
             name: profile.username,
             email: profile.email,
             image: profile.image,
             account_type: profile.account_type,
-            media_count: profile.media_count,
             media: profile.media.data,
           };
         }
@@ -112,6 +113,55 @@ export default NextAuth({
         redirect_uri: encodeURIComponent(process.env.INSTAGRAM_REDIRECT_URI),
       },
     },
+    FacebookProvider({
+      clientId: process.env.NEXTAUTH_FACEBOOK_ID,
+      clientSecret: process.env.NEXTAUTH_FACEBOOK_SECRET,
+      token: {
+        url: "https://graph.facebook.com/oauth/access_token",
+        async request({ client, params, checks, provider }) {
+          const response = await client.oauthCallback(
+            provider.callbackUrl,
+            params,
+            checks,
+            {
+              exchangeBody: {
+                client_id: client.client_id,
+                client_secret: client.client_secret,
+              },
+            }
+          );
+          //console.log("response ====", response);
+          return { tokens: response };
+        },
+      },
+      authorization: {
+        url: "https://www.facebook.com/v15.0/dialog/oauth",
+        params: {
+          scope: "email,public_profile",
+        },
+      },
+      userinfo: {
+        url: "https://graph.facebook.com/me",
+        // https://developers.facebook.com/docs/graph-api/reference/user/#fields
+        params: { fields: "id,name,email,picture" },
+        async request({ tokens, client, provider }) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          return await client.userinfo(tokens.access_token, {
+            // @ts-expect-error
+            params: provider.userinfo?.params,
+          });
+        },
+      },
+      profile(profile) {
+        //console.log(profile)
+        return {
+          id: profile.id,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture.data.url,
+        };
+      },
+    }),
   ],
 
   secret: process.env.SECRET,
@@ -128,33 +178,36 @@ export default NextAuth({
     // You can define your own encode/decode functions for signing and encryption
   },
 
-  pages: {},
+  pages: {
+    signIn: "/signin",
+  },
 
   callbacks: {
-    jwt: async ({ token, user, account, profile, isNewUser }) => {
-      const isSignIn = user ? true : false;
-      // Add auth_time to token on signin in
-      if (isSignIn) {
-        token.auth_time = Math.floor(Date.now() / 1000);
+    async jwt({ token, account }) {
+      // Persist the OAuth access_token to the token right after signin
+      if (account) {
+        token.accessToken = account.access_token;
       }
-      if (user && profile) {
-        token.profile = profile;
-      }
-      return Promise.resolve(token);
+      return token;
     },
     session: async ({ session, token }) => {
-      //  console.log("token", token);
+      const regex = /^IG/;
+      const isIGToken = regex.test(token.accessToken);
+      if (isIGToken) {
+        session.login_type = "Instagram";
+      } else {
+        session.login_type = "Facebook";
+      }
       if (session && token?.profile) {
         session.profile = token.profile;
       }
-      //  console.log("session", session);
+      //console.log("session", session);
       if (!session?.user || !token?.account) {
         return session;
       }
-
+      //console.log('token', token)
       session.user.id = token.account.id;
       session.accessToken = token.account.accessToken;
-
       return session;
     },
   },

@@ -1,13 +1,21 @@
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import styles from "./header.module.css";
+import { getOpenseaURL } from "../helpers";
+import { useEffect, useState } from "react";
 
 // The approach used in this component shows how to build a sign in and sign out
 // component that works on pages which support both client and server side
 // rendering, and avoids any flash incorrect content on initial page load.
 export default function Header() {
   const { data: session, status } = useSession();
+  const [openseaURL, setOpenseaURL] = useState("/");
   const loading = status === "loading";
+
+  useEffect(async () => {
+    const { openseaurl } = await getOpenseaURL();
+    setOpenseaURL(openseaurl);
+  }, []);
 
   return (
     <header>
@@ -23,7 +31,7 @@ export default function Header() {
           {!session && (
             <>
               <span className={styles.notSignedInText}>
-                You are not signed in Instagram yet.
+                To convert your Instagram posts into NFTs, please sign in.
               </span>
               <a
                 href={`/api/auth/signin`}
@@ -67,11 +75,15 @@ export default function Header() {
 
       <div className="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box">
         <div className="flex-none px-2 mx-2">
-          <span className="text-lg font-bold">Inst2NFT</span>
+          <div className="items-stretch">
+            <Link href="/">
+              <a className="btn btn-ghost btn-sm rounded-btn">Inst2NFT</a>
+            </Link>
+          </div>
         </div>
         <div className="flex-1 px-2 mx-2">
           <div className="items-stretch">
-            <Link href="https://testnets.opensea.io/collection/inst2nft">
+            <Link href={openseaURL}>
               <a className="btn btn-ghost btn-sm rounded-btn">
                 View On OpenSea
               </a>

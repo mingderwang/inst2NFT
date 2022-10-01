@@ -51,3 +51,39 @@ npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
 # Performance optimizations
 
 For faster runs of your tests and scripts, consider skipping ts-node's type checking by setting the environment variable `TS_NODE_TRANSPILE_ONLY` to `1` in hardhat's environment. For more details see [the documentation](https://hardhat.org/guides/typescript.html#performance-optimizations).
+
+# Polygon
+
+```
+➜  hardhat git:(polygon) ✗ npx hardhat run scripts/deploy.ts
+Generating typings for: 24 artifacts in dir: typechain for target: ethers-v5
+Successfully generated 39 typings!
+Compiled 24 Solidity files successfully
+Deploying Inst2NFT...
+Inst2NFT deployed to: 0x8B3d0cF3795cdb0e1613F6A8a294a965dA93BEFc
+```
+> after get real address of the Inst2NFT contract.
+
+```
+➜  hardhat git:(polygon) ✗ npx hardhat verify 0x58719A1434692C040Bd04647481386C7B4dc20d4 --network polygon
+Nothing to compile
+No need to generate any newer typings.
+Successfully submitted source code for contract
+contracts/Inst2NFT.sol:Inst2NFT at 0x58719A1434692C040Bd04647481386C7B4dc20d4
+for verification on Etherscan. Waiting for verification result...
+
+Successfully verified contract Inst2NFT on Etherscan.
+https://polygonscan.com/address/0x58719A1434692C040Bd04647481386C7B4dc20d4#code
+```
+> hardhat.config.ts
+```
+const defaultNetwork = 'polygon'
+...
+  etherscan: {
+    apiKey: process.env.POLYGONSCAN_API_KEY,
+  },
+```
+> .env
+```
+POLYGONSCAN_API_KEY=YHRM33PWZ1Q3GUG1YPTHCD1PN4R8
+```

@@ -5,11 +5,12 @@ import React from "react";
 import WalletLink from "walletlink";
 import Web3Modal from "web3modal";
 import { providers } from "ethers";
-import { getChainData } from "../helpers";
+import { useRecoilState } from "recoil";
+import { connectState } from "../recoil/atoms";
+import { getSettings, getChainById } from "../helpers";
+import { setConfig } from "next/config";
 
-const { DEFAULT_NETWORK } = require("../.secret.json");
-
-const INFURA_ID = "460f40a260564ac4a4f4b3fffb032dad";
+const { INFURA_ID } = require("../.secret.json");
 
 const providerOptions = {
   walletconnect: {
@@ -46,7 +47,6 @@ var web3Modal;
 
 if (typeof window !== "undefined") {
   web3Modal = new Web3Modal({
-    network: DEFAULT_NETWORK, // optional
     cacheProvider: true,
     providerOptions, // required
   });
@@ -95,10 +95,39 @@ const shortAddress = (address, width) => {
 };
 
 function ConnectWallet() {
-  const [showAlert, setShowAlert] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
   const { provider, web3Provider, address, chainId } = state;
-  const onlyNetwork = `(This App Only for ${DEFAULT_NETWORK})`;
+  const [, setConnect2] = useRecoilState(connectState); // impact those convert to NFT buttons
+  const [defaultNetwork, setDefaultNetwork] = useState("");
+  const [onNetwork, setOnNetwork] = useState("");
+  const [match, SetMatch] = useState(false);
+
+  function setAndCheck(chainId) {
+    const intChainId = parseInt(chainId, 16); // convert 0x3 to 3
+    const currentNetwork = getChainById(intChainId);
+    setOnNetwork(currentNetwork);
+  }
+
+  function setAndCheck2() {
+    if (onNetwork === defaultNetwork) {
+      SetMatch(true);
+    } else {
+      SetMatch(false);
+    }
+    setConnect2(match);
+  }
+
+  const setAndCheck3 = (a, b) => {
+    const currentNetwork = getChainById(b);
+    if (a !== "" && a === currentNetwork) {
+      SetMatch(true);
+      setConnect2(true);
+    }
+  };
+
+  useEffect(() => {
+    setAndCheck2();
+  }, [onNetwork, defaultNetwork]);
 
   const connect = useCallback(async function () {
     // This is the initial `provider` that is returned when
@@ -121,8 +150,13 @@ function ConnectWallet() {
         address,
         chainId: network.chainId,
       });
+      const currentNetwork = getChainById(network.chainId);
+      if (currentNetwork) {
+        setOnNetwork(currentNetwork);
+      }
+      setAndCheck3(currentNetwork, network.chainId); // include setConnect2(match)
     } catch (error) {
-      console.log("web3Modal error", error);
+      console.error("web3Modal error", error);
     }
   }, []);
 
@@ -135,14 +169,36 @@ function ConnectWallet() {
       dispatch({
         type: "RESET_WEB3_PROVIDER",
       });
+      setConnect2(false); // impact those convert to NFT buttons
     },
     [provider]
   );
 
+  useEffect(() => {
+    setConnect2(match);
+  }, [match]);
+
   useEffect(async () => {
     await connect();
+    const { defaultNetwork } = await getSettings();
+    setDefaultNetwork(defaultNetwork);
+    if (typeof window?.ethereum !== "undefined") {
+      window.ethereum.on("accountsChanged", (_accounts) => {
+        dispatch({
+          type: "SET_ADDRESS",
+          address: _accounts.length >= 1 ? _accounts[0] : "no account",
+        });
+      });
+      window.ethereum.on("chainChanged", (_chainId) => {
+        const intChainId = parseInt(_chainId, 16); // convert 0x3 to 3
+        dispatch({
+          type: "SET_CHAIN_ID",
+          chainId: intChainId,
+        });
+        setAndCheck(_chainId);
+      });
+    }
   }, []);
-  const chainData = getChainData(chainId);
 
   return (
     <div className="flex">
@@ -157,15 +213,20 @@ function ConnectWallet() {
           </button>
         )}
       </div>
-
-      <div className="flex-initial w-64 ...">
-        {address && (
+      <div className="flex-initial w-100">
+        {match && web3Provider && <p>✅ running on {onNetwork} network </p>}
+        {!match && (
+          <div>
+            <p>
+              {" "}
+              {`❌ (Connect and switch your wallet to ${defaultNetwork} network.)`}
+            </p>
+          </div>
+        )}
+        {match && address && shortAddress && (
           <div className="grid">
             <div>
-              <p>{chainData?.name}</p> {onlyNetwork}
-            </div>
-            <div>
-              <p>{shortAddress(address, 6)}</p>
+              <p>with account: {shortAddress(address, 6)}</p>
             </div>
           </div>
         )}
